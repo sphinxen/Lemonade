@@ -1,0 +1,27 @@
+<IfModule mod_rewrite.c>
+	#Options +FollowSymLinks  -MultiViews
+	RewriteEngine on
+	RewriteBase /angelbear/
+
+	RewriteCond %{REQUEST_FILENAME} pictures/.*
+	RewriteCond %{REQUEST_FILENAME} !.*/tn/.*\.(jpg|png|jpeg|gif)
+	RewriteRule ^.* index.php
+
+
+	# If the URI is not .htm and doesn't have any additonal params, try .htm
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^(?![^/]+\.htm)([^/]+)$ $1.htm [NC,L]
+	# Adding the R flag causes the URI to be rewritten in the browser rather than just internally
+
+	# If the URI is .htm but it doesn't exist, pass to index.php
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^([^/\.]+\.htm)$ $1/no [NC,L]
+
+	# Passes requested path as 'q' to index.php
+	RewriteCond $1 !^(index\.php|robots\.txt)
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^(.*)$ index.php?/$1 [NC,L]
+</IfModule>

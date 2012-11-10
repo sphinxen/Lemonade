@@ -1,0 +1,7 @@
+Thank you for choosing Lemonade MCV framework. To get started, please follow the following steps:
+
+1. Create a copy of "config.tpl.php" within the "application" folder named "config.php"
+
+2. Modify the "config.php" file to match your database information.
+
+
