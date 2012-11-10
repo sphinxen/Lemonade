@@ -1,0 +1,65 @@
+@import url("blueprint/screen.css");
+
+body {
+	background-color: #BFBFB0;
+}
+
+#header {
+	width: 100%;
+	background-color: #EAB885;
+	display: inline-block;
+	margin: 0px;
+}
+
+#header .logo span{
+	font-family: courier, monospace, sans-serif;
+	color: #FFF9B5;
+	font-size: 10em;
+	margin-bottom: 0px;
+}
+
+#content {
+	padding: 20px 10px 40px 10px;
+	background-color: #F9F9DC;
+}
+
+#footer {
+	padding: 10px 10px 10px 10px;
+	background-color: #FFF9B5;
+}
+
+*[id*='nav'] ul{
+	list-style-type: none;
+}
+
+#main-nav a {
+	text-decoration: none;
+	font-size: 3em;
+	color:#FFF9B5;
+	padding: 0.5em;
+}
+#main-nav a.active {
+	text-decoration: underline;
+}
+#main-nav a:link{}
+#main-nav a:visited{}
+#main-nav a:hover{text-decoration: underline;}
+#main-nav a:active{}
+
+.inline-block{
+	display: inline-block !important;
+}
+
+.block label {
+	display: block;
+}
+
+.post {
+	padding: 3px;
+}
+.post div{
+	padding: 2px;
+}
+.post div:first-child {
+	background: gray;
+}
