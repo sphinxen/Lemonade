@@ -23,13 +23,6 @@ class CSetup extends CController
 			<br />Open <strong>" . ROOT.'core/config.php'. "</strong> and enter the data to your database.";
 		}
 
-		if(!is_writable(ROOT.'application/controllers/'))
-		{
-			echo "<p>Lemonade need writing permission to the following folders: ";
-			if(!is_writable(ROOT.'application/controllers/'))
-				echo "<br><strong>".ROOT."application/controllers/</strong>";
-		}
-
 		if(!$db->table_exists('users'))
 		{
 			$data['stylesheets'] = array(BASE.'assets/css/stylesheet.css');

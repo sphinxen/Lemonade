@@ -60,7 +60,7 @@ class Lemonade_blender implements ISingleton
 
 		// 	Check if a connection to the database could be established and that application/controller folder is writable,
 		//  otherwise load the setup page
-		if($db->connect_error || !$db->table_exists('users') || !is_writable(ROOT.'application/controllers/'))
+		if( $db->connect_error || !$db->table_exists('users') )
 			$segment[0] = !empty($segment[0]) ? $segment[0] : 'setup';
 		else
 		{
