@@ -43,11 +43,13 @@ function __autoload($aClassName)
 /**
 *	Redirect page to given url
 *
-*	@param string $url
+*	@param string $url Absoule or relative URL path
 */
 function redirect($url)
 {
-	header('location: '.$url);
+    if(preg_match_all('/(http:\/\/|ftp:\/\/|https:\/\/)([^ \s\t\r\n\v\f]*)\.([A-Za-z]*)/', $url))
+    	header('location: '.$url);
+    header('location: '. BASE . $url);
 }
 
 interface ISingleton

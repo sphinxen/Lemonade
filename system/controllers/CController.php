@@ -51,26 +51,23 @@ abstract class CController implements IController
 		extract($region);
 
 
-		// Check if admin or user is loged in
-		if($_SESSION['user']['role'] != 'admin')
+		// Check if user is loged in
+		if(!isset($_SESSION['id']))
 		{
 			$menu['admin'] = '';
 			$menu['user'] = '';
 
 			$form = new Form();
 
-			
-			$user_form = $form->start(null, 'block', 'user');
-			$user_form .= "<fieldset><legend>Login</legend>";
-			$user_form .= "<label>Username or E-mail</label>";
-			$user_form .= $form->input('text', array('name' => 'user'));
-			$user_form .= "<label>Password</label>";
-			$user_form .= $form->input('password', array('name' => 'password'));
-			$user_form .= "<br />";
-			$user_form .= $form->input('submit', array('value' => 'Login'));
-			$user_form .= "</fieldset></form>";
-
-			$content['right'] = $user_form;
+			$login_menu = $form->start(null, 'block', 'user/login');
+			$login_menu .= "<fieldset><legend>Login</legend>";
+			$login_menu .= "<label>Username or E-mail</label>";
+			$login_menu .= $form->input('text', array('name' => 'user'));
+			$login_menu .= "<label>Password</label>";
+			$login_menu .= $form->input('password', array('name' => 'password'));
+			$login_menu .= "<br />";
+			$login_menu .= $form->input('submit', array('value' => 'Login'));
+			$login_menu .= "</fieldset></form>";
 		}
 
 		// Check if $menu['main'] is set. Otherwise tries to autogenerate a main-menu
@@ -166,14 +163,14 @@ abstract class CController implements IController
 	{             
 		// Load the view and store it in a variable
 		ob_start();
-                        require_once(ROOT."application/views/{$header}.php");
-                        $page = ob_get_contents();
-                ob_end_clean();	
+                require_once(ROOT."application/views/{$header}.php");
+                $page = ob_get_contents();
+        ob_end_clean();	
 		
 		// Process the code and return or print the final page
-                if($return)
-                        return $this->page_process($page);
-                print($this->page_process($page));
+        if($return)
+                return $this->page_process($page);
+        print($this->page_process($page));
 	}
 	
 	public function footer($footer)

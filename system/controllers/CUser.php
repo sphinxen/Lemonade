@@ -34,27 +34,26 @@ class CUser extends CController
 
 		$form->set_validate_rules("data", "Data", "clean");
 
-		$form->set_validate_rules("username", "Username", "trim|clean");
-		$form->set_validate_rules("email", "E-mail", "trim|required|clean");
+		$form->set_validate_rules("user", "Username or E-mail", "trim|required|clean");
 		$form->set_validate_rules("password", "Password", "trim|required|md5");
 		$form->set_validate_rules("confirm_pass", "Confirm Password", "trim|required");
 
-		if(!$form->validate())
+		if($form->validate())
 		{
-			$this->_login();
+			$this->login();
 		}
 
-		$user_form = $form->start();
-		$user_form .= "<legend>Username or E-mail</legend>";
-		$user_form .= $form->input('text', array('name' => 'user'));
-		$user_form .= "<legend>Password</legend>";
-		$user_form .= $form->input('password', array('name' => 'password'));
-		$user_form .= "<br />";
-		$user_form .= $form->input('submit', array('value' => 'Login'));
-		$user_form .= "</form>";
-		$user_form .= $form->validate_error();
+		$login_menu = $form->start();
+		$login_menu .= "<legend>Username or E-mail</legend>";
+		$login_menu .= $form->input('text', array('name' => 'user'));
+		$login_menu .= "<legend>Password</legend>";
+		$login_menu .= $form->input('password', array('name' => 'password'));
+		$login_menu .= "<br />";
+		$login_menu .= $form->input('submit', array('value' => 'Login'));
+		$login_menu .= "</form>";
+		$login_menu .= $form->validate_error();
 
-		$data['region']['content']['main'] = $user_form;
+		$data['region']['content']['main'] = $login_menu;
 
 		$this->view('default/default_view', $data);
 	}
@@ -62,13 +61,27 @@ class CUser extends CController
 	{
 		$this->user->logout();
 
-		redirect(BASE.'index');
+		redirect('index');
 	}
-	private function _login()
+	
+	public function login()
 	{
-		if($this->user->login($_POST['user'], $_POST['password']));
-		
-		redirect(BASE.'index');
+		$form = new Form();
+
+		$form->set_validate_rules("user", "User", "trim|clean|required");
+		$form->set_validate_rules("password", "Password", "required|md5");
+
+		if($form->validate())
+		{
+			$user_module = $this->module('Login');
+
+			if($user_module->login($_POST['user'], $_POST['password']))	
+				redirect('index');
+			else
+				redirect('user');
+		}		
+		else
+			redirect('user');
 	}
 
 

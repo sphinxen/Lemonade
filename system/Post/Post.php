@@ -16,9 +16,10 @@ class Post {
 
 	public function __construct($table_name = "posts", $table_parent = null, $table_users = "users")
 	{
-		$this->tab_name = $table_name;
-		$this->tab_parent = $table_parent;
-		$this->tab_users = $table_users;
+		global $cfg;
+		$this->tab_name = $cfg['db']['prefix'].$table_name;
+		$this->tab_parent = $cfg['db']['prefix'].$table_parent;
+		$this->tab_users = $cfg['db']['prefix'].$table_users;
 
 		global $db;
 		$this->db = $db; 
@@ -167,9 +168,9 @@ EOD;
  	 */
  	private function createDB()
  	{
- 		$parent = isset($this->tab_parent) ? 
+ 		$parent = !empty($this->tab_parent) ? 
  				"`id_{$this->tab_parent}` INT NOT NULL,
- 					FOREIGN KEY (`id_{$this->tab_parent}`) REFERENCES `{$this->tab_parent}`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE,"
+ 					CONSTRAINT FOREIGN KEY (`id_{$this->tab_parent}`) REFERENCES `{$this->tab_parent}`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE,"
  					: "";
 
  		$query = <<<EOD
@@ -178,14 +179,15 @@ EOD;
  				`id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
  				`post` LONGTEXT NOT NULL,
  				`id_user` INT NULL,
- 					FOREIGN KEY (`id_user`) REFERENCES `{$this->users}`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+ 					CONSTRAINT FOREIGN KEY (`id_user`) REFERENCES `{$this->tab_users}`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
  				{$parent}
- 				`date` DATETIME NOT NULL,
+ 				`date` DATETIME NOT NULL DEFAULT 0,
  				`edited` DATETIME NULL,
  				`locked` TINYINT NULL DEFAULT '1',
  				`hidden` TINYINT NULL DEFAULT '1'
  			);
 EOD;
+
 		$this->query($query);
 		return $this->db->affected_rows;
  	} 

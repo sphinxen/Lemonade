@@ -49,22 +49,26 @@ class Guestbook
 	 */
 	public function getGuestbook($limit = 30, $offset = 0)
 	{
-		$res = $this->getGuestbookRaw($limit, $offset);
-		// print_r($res);
-
-		// $guestbook = "<div id='>";
-		while($post = $res->fetch_array())
+		if($res = $this->getGuestbookRaw($limit, $offset))
 		{
-			$guestbook .= <<<EOD
-			<div class="post">
-			<div>{$post['author']}  {$post['date']}</div>
-			<div>{$post['post']} {$post['edited']}</div>
-			</div>
-			<hr />
+			$id = isset($this->id) ? " id='{$this->id}'" : "";
+			$class = isset($this->class) ? " class='{$this->class}'" : "";
+
+			$guestbook = "<div{$id}{$class}>";
+			while($post = $res->fetch_array())
+			{
+				$guestbook .= <<<EOD
+				<div class="post">
+				<div>{$post['author']}  {$post['date']}</div>
+				<div>{$post['post']} {$post['edited']}</div>
+				</div>
+				<hr />
 EOD;
 
+			}
+			$guestbook .= "</div>";
 		}
-		// $guestbook .= "</table>";
+		
 
 		return $guestbook;
 	}

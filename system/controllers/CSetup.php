@@ -46,7 +46,7 @@ class CSetup extends CController
 
 
 			
-			if(!$form->validate())
+			if($form->validate())
 			{
 				$this->create_database();
 			}
@@ -54,18 +54,18 @@ class CSetup extends CController
 
 
 			$user_form = $form->start(null, "block");
-			$user_form .= "<fieldset>";
+			$user_form .= "<div>";
 			$user_form .= "<label>Username</label>";
 			$user_form .= $form->input('text', array('name' => 'username'));
 			$user_form .= "<label>E-mail</label>";
 			$user_form .= $form->input('text', array('name' => 'email'));
 			$user_form .= "<label>Password</label>";
-			$user_form .= $form->input('text', array('name' => 'password'));
+			$user_form .= $form->input('password', array('name' => 'password', 'autocomplete' => 'off'));
 			$user_form .= "<label>Confirm Password</label>";
-			$user_form .= $form->input('text', array('name' => 'confirm_pass'));
+			$user_form .= $form->input('password', array('name' => 'confirm_pass', 'autocomplete' => 'off'));
 			$user_form .= "<br />";
 			$user_form .= $form->input('submit', array('value' => 'Create Account'));
-			$user_form .= "</fieldset>";
+			$user_form .= "</div>";
 			$user_form .= "</form>";
 			$user_form .= $form->validate_error();
 
@@ -99,6 +99,7 @@ class CSetup extends CController
 		global $cfg;
 		global $db;
 
+		$salt = sha1($_POST['password']);
 
 		$query = <<<EOD
 			CREATE TABLE IF NOT EXISTS `{$cfg['db']['prefix']}users`	
@@ -112,7 +113,7 @@ class CSetup extends CController
 	 		CREATE TABLE IF NOT EXISTS `{$cfg['db']['prefix']}userdata`
 	 		(
 	 			`id_user` INT NOT NULL,
-	 				CONSTRAINT FOREIGN KEY (`id_user`) REFERENCES `{$cfg['db']['prefix']}users`(`id`) ON UPDATE CASCADE,
+	 				CONSTRAINT FOREIGN KEY (`id_user`) REFERENCES `{$cfg['db']['prefix']}users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	 			`first_name` VARCHAR(64) NULL,
 		 		`last_name` VARCHAR(64) NULL,
 		 		`birthdate` VARCHAR(12) NULL, 
@@ -128,12 +129,16 @@ class CSetup extends CController
 			(
 				`id` INT PRIMARY KEY AUTO_INCREMENT,
 				`controller` VARCHAR(64) NOT NULL,
-				`action` VARCHAR(64) NOT NULL
+				`action` VARCHAR(64) NOT NULL,
+				`name` VARCHAR(64) NOT NULL DEFAULT 'default_name',
+				`pubished` TINYINT NOT NULL DEFAULT '0'
 			);
 
 			CREATE TABLE IF NOT EXISTS `{$cfg['db']['prefix']}regions`
 			(
 				`id` INT PRIMARY KEY AUTO_INCREMENT,
+				`id_parent_region` INT NULL,
+					CONSTRAINT FOREIGN KEY (`id_parent_region`) REFERENCES `{$cfg['db']['prefix']}regions`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 				`region` VARCHAR(64) NOT NULL
 			);
 
@@ -141,31 +146,36 @@ class CSetup extends CController
 			(
 				`id` INT PRIMARY KEY AUTO_INCREMENT,
 				`id_page` INT NOT NULL,
-					CONSTRAINT FOREIGN KEY (`id_page`) REFERENCES `{$cfg['db']['prefix']}pages`(`id`) ON UPDATE CASCADE,
+					CONSTRAINT FOREIGN KEY (`id_page`) REFERENCES `{$cfg['db']['prefix']}pages`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 				`id_region` INT NOT NULL,
-					CONSTRAINT FOREIGN KEY (`id_region`) REFERENCES `{$cfg['db']['prefix']}regions`(`id`) ON UPDATE CASCADE,
+					CONSTRAINT FOREIGN KEY (`id_region`) REFERENCES `{$cfg['db']['prefix']}regions`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 				`content` LONGTEXT NULL
 			);
 
+			INSERT INTO `{$cfg['db']['prefix']}pages` (`controller`, `action`, `name`, `pubished`)
+				VALUES
+					('default_controller', 'index', 'home', 1);
+
 			INSERT INTO `{$cfg['db']['prefix']}users` (`username`, `email`, `password`) 
 				VALUES 
-					('{$_POST['username']}', '{$_POST['email']}', '{$_POST['password']}');
+					('{$_POST['username']}', '{$_POST['email']}', '{$salt}{$_POST['password']}');
 
 			INSERT INTO `{$cfg['db']['prefix']}regions` (`id`, `id_parent_region`, `region`)
 				VALUES
 					 (1, NULL, 'header')
 					,(2, 1, 'logo')
 					,(3 , NULL, 'content')
-					,(4, 2, 'left')
-					,(5, 2, 'main')
-					,(6, 2, 'right')
+					,(4, 3, 'left')
+					,(5, 3, 'main')
+					,(6, 3, 'right')
 					,(7, NULL, 'footer');
 EOD;
+
 
 		$db->connect();
 		$db->multi_query($query);
 		$db->close();
 
-		redirect(BASE.$cfg['default_page']);
+		redirect($cfg['default_page']);
 	}
 }

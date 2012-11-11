@@ -115,7 +115,7 @@ class Form
     public function validate()
     {
         if (count($_POST) == 0)
-            return 'false';
+            return false;
 
         $_POST = &$_POST;
 
@@ -167,7 +167,9 @@ class Form
                 }
             }
         }   
-        return count($this->error);
+        if(count($this->error))
+            return false;
+        return true;
     }
 
     /**

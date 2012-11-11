@@ -48,10 +48,9 @@ class CContent extends CController
 
 		$form->set_validate_rules("data", "Data", "clean");
 
-		if(!$form->validate())
+		if($form->validate())
 		{
-			echo 'true';
-			// $this->save();
+			$this->save();
 		}
 
 		$data['region']['content']['main'] = "<fieldset class='clearfix inline-block'><legend>Page</legend>";
@@ -111,7 +110,7 @@ class CContent extends CController
 
 		$form->set_validate_rules("page", "Page name", "required");
 
-		if(!$form->validate())
+		if($form->validate())
 		{
 			global $db;
 			$db.connect();
@@ -215,7 +214,7 @@ class CContent extends CController
 		
 		$form->set_validate_rules("data", "Data", "clean");
 
-		if(!$form->validate())
+		if($form->validate())
 		{
 			global $db;
 

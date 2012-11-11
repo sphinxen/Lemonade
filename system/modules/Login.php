@@ -21,19 +21,27 @@ class Login
 		$salt = sha1($password);
 		$db->connect();
 
-		//$query = "SELECT * FROM `users` WHERE `username` = '{$user}' OR `email` = '{$user}' AND `password` = '{$salt}{$password}'";
-		//$result = "SELECT * FROM `users` WHERE `username` = '".$user."' OR `email` = '".$user." AND `password` = '".$salt.$password."'";
 		$result = $db->query("SELECT * FROM `users` WHERE `username` = '{$user}' OR `email` = '{$user}' AND `password` = '{$salt}{$password}'");
 		
 		if($result->num_rows > 0)
 		{
 			$row = $result->fetch_array();
 
+			$_SESSION['id'] = $row['id'];
 			$_SESSION['user'] = $row['username'];
 			$db->close();
 			return true;
 		}
 		
 		return false;
+	}
+
+	public function logout()
+	{
+		// Unset all of the session variables.
+		$_SESSION = array();
+
+		// Finally, destroy the session.
+		session_destroy();
 	}
 }
