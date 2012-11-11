@@ -1,4 +1,4 @@
-<?php $this->view('heads/xhtml-1.0-strict');?>
+<?php $this->view('heads/html5');?>
 <body>
 	<div id='container' class='span-24'>
 		<div id='header'>
@@ -23,11 +23,7 @@
 	 		<div id="content-right" class="span-6 right">
 	 			<?php echo $this->menu->GenerateNavigation($menu['admin']); ?>
 	 			<?php echo $content['right'];?>
+	 			<?php echo $login_menu;?>
 	 		</div>
 		</div>
-		<div id="footer">
-			<?php echo $footer;?>
-		</div>
-	</div>
-</body>
-</html>
+<?php $this->view('footers/default_footer');

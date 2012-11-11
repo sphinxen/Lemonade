@@ -50,7 +50,7 @@ class Default_controller extends CController
 
 		
 		$gb = $this->module('Guestbook');
-		$gb = new Guestbook();
+		//$gb = new Guestbook();
 		
 		
 		// $gb->posts->add("test", 1);
@@ -65,7 +65,6 @@ class Default_controller extends CController
 		// $result->close();
 		// echo "<pre>".print_r($post, true). "</pre>";
 		$data['region']['content']['main'] = $gb->getGuestbook();
-
 
 		$this->view('default/default_view', $data);
 
