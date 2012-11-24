@@ -36,7 +36,7 @@ abstract class CController implements IController
 	* @param bool $return If TRUE the data will be returned as a variable
 	* @return string
 	*/
-	protected function view($view, $data = NULL, $return = FALSE)
+	protected function load_view($view, $data = NULL, $return = FALSE)
 	{	
 		global $cfg;
 
@@ -49,7 +49,6 @@ abstract class CController implements IController
 	
 		extract($data);
 		extract($region);
-
 
 		// Check if user is loged in
 		if(!isset($_SESSION['id']))
@@ -86,15 +85,11 @@ abstract class CController implements IController
 		}
 		$logo = BASE.'assets/images/logo.svg';
 
-		
 		// Fetches the view and store the page in a variable
 		ob_start(); 
-			require_once(ROOT."application/views/{$view}.php");
-			$page = ob_get_contents();
-		ob_end_clean(); 
-		
-		
-		
+			require(ROOT."application/views/{$view}.php");
+		$page = ob_get_clean();
+
  		// Process the code and return or print the final page
 		if($return)
 			return $this->page_process($page);
@@ -106,7 +101,7 @@ abstract class CController implements IController
 	*
 	*	@param string $module Name of the module to be loaded, with relative path but without extention
 	*/
-	protected function module($module)
+	protected function load_module($module)
 	{
 		if(is_file(ROOT."application/modules/{$module}.php"))
 		{
@@ -135,10 +130,15 @@ abstract class CController implements IController
 	public function page_process($string)
 	{		
 
-		preg_match_all('/(((\<|&lt;)\?php)(.*?)(\?(\>|&gt;)))|((http:\/\/|ftp:\/\/|https:\/\/)([^ \s\t\r\n\v\f]*)\.([A-Za-z]*))|(([^ "(),:;<>@\s\t\r\n\v\f]*)@([^ "(),:;<>@[\]\s\t\r\n\v\f]*)(\.[A-Za-z]*))/', substr($string, strpos($string, '<body>'), strpos($string, '</body>')), $PHPcode);
-
+		preg_match_all('/(((\<|&lt;)\?php)(.*?)(\?(\>|&gt;)))|([;\s](http|ftp)s?(:\/\/)(www\.)?([\w\d-.\/]+?)*)|([\s;]([\w\d-.]*)@([\w\d-.]*)(\.[A-Za-z]*))/', substr($string, strpos($string, '<body>'), strpos($string, '</body>')), $PHPcode);
+		
 		foreach (array_unique($PHPcode[0]) as $value) 
 		{
+			
+			if($value[0] != '\w')
+				$value = substr($value, 1);//preg_replace('/[>;]/', '', $value);
+
+			$value = preg_replace('/\s/', "", $value);
 			if(strstr($value, '?php'))
 			{
 				ob_start();
@@ -147,9 +147,9 @@ abstract class CController implements IController
 				ob_end_clean();
 				$string =  str_replace($value, $php, $string);
 			}
-			elseif(strstr($value, 'http://') || strstr($value, 'https://') || strstr($value, 'ftp://') && strstr($value, '<a href'))
+			elseif(strstr($value, 'http://') || strstr($value, 'https://') || strstr($value, 'ftp://') )
 				$string = str_replace($value, '<a href="'.$value.'">'.$value.'</a>', $string);
-			elseif(strstr($value, '@') && strstr($value, '<a href'))
+			elseif(strstr($value, '@'))
 				$string = str_replace($value, '<a href="mailto:'.$value.'">'.$value.'</a>', $string);
 		}
 
@@ -158,6 +158,8 @@ abstract class CController implements IController
 		
 		return $string;
 	}
+
+
 	
 	public function header($header, $return = FALSE)
 	{             

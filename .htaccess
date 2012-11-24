@@ -1,12 +1,7 @@
 <IfModule mod_rewrite.c>
-	#Options +FollowSymLinks  -MultiViews
+	Options +FollowSymLinks  -MultiViews
 	RewriteEngine on
 	RewriteBase /
-
-	RewriteCond %{REQUEST_FILENAME} pictures/.*
-	RewriteCond %{REQUEST_FILENAME} !.*/tn/.*\.(jpg|png|jpeg|gif)
-	RewriteRule ^.* index.php
-
 
 	# If the URI is not .htm and doesn't have any additonal params, try .htm
 	RewriteCond %{REQUEST_FILENAME} !-d

@@ -20,53 +20,24 @@ class Default_controller extends CController
 		global $cfg;
 		$data = $cfg['data'];
 
-		// Load the content module
-		$content = $this->module('Content');
+		// Load modules
+		$content = $this->load_module('Content');
+		$gb = $this->load_module('Blogg');
 
-		// Load all the page data from database for specified page
-		$data['region'] = $content->get_all_content('home');	
+		// Load all the page data from database
+	//	$data['region'] = $content->get_all_content('guestbook');	
 
 		/*
 		*	Pagedata goes here
 		*/
 
-		$this->view('default/default_view', $data);
+		$data['region']['content']['main'] = $gb->getBlogg();
+
+		$this->load_view('default/default_view', $data);
 	}
 
-	public function guestbook()
+	public function save()
 	{
-		// Load the data from config file
-		global $cfg;
-		$data = $cfg['data'];
-
-		// Load modules
-		$content = $this->module('Content');
-
-		// Load all the page data from database
-		$data['region'] = $content->get_all_content('guestbook');	
-
-
-
-
-		
-		$gb = $this->module('Guestbook');
-		//$gb = new Guestbook();
-		
-		
-		// $gb->posts->add("test", 1);
-		// $gb->comments->add("comment", 1 , 1);
-		// $gb->posts->delete(5);
-		// $gb->posts->edit(4, "en ny text");
-		// $result = $gb->posts->get(4);
-		// $result = $gb->search("test");
-		// if($result == null)
-		// 	echo 'null';
-		// 	$post = $result->fetch_array();
-		// $result->close();
-		// echo "<pre>".print_r($post, true). "</pre>";
-		$data['region']['content']['main'] = $gb->getGuestbook();
-
-		$this->view('default/default_view', $data);
 
 	}
 }

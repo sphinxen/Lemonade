@@ -28,7 +28,7 @@ class CContent extends CController
 
 
 		// Load the content module
-		$content = $this->module('Content');
+		$content = $this->load_module('Content');
 
 		// Get all the available pages from database
 		foreach ($content->get_pages() as $key) 
@@ -54,18 +54,18 @@ class CContent extends CController
 		}
 
 		$data['region']['content']['main'] = "<fieldset class='clearfix inline-block'><legend>Page</legend>";
-		$data['region']['content']['main'] .= $form->start();
+		$data['region']['content']['main'] .= $form->start("content");
 		$data['region']['content']['main'] .= "<lable>Select page <a class='right' href='".BASE."content/addPage'>Add page</a></lable>";
 		$data['region']['content']['main'] .= $form->select($pages, array('style' => 'width:100%', 'name' => 'page'));
 		$data['region']['content']['main'] .= "<lable>Select region <a class='right' href=".BASE."content/addRegion'>Add region</a></lable>";
 		$data['region']['content']['main'] .= $form->select($regions, array('style' => 'width:100%', 'name' => 'region'));
 		$data['region']['content']['main'] .= "<lable></lable>";
-		$data['region']['content']['main'] .= $form->textarea(array('name' => 'data'));
+		$data['region']['content']['main'] .= $form->textarea(array('class' => 'wymeditor','name' => 'data'));
 		$data['region']['content']['main'] .= "<lable></lable>";
 		$data['region']['content']['main'] .= $form->input('submit', array('value' => 'Save', 'style' => 'width:100%'));
 		$data['region']['content']['main'] .= "</form></fieldset>";
 
-		$this->view('default/default_view', $data);
+		$this->load_view('default/default_view', $data);
 	}
 
 	/**
@@ -75,7 +75,7 @@ class CContent extends CController
 	public function get_content()
 	{
 		// Load the content module
-		$content = $this->module('Content');
+		$content = $this->load_module('Content');
 
 		$result = $content->get_content($_POST['id_page'], $_POST['id_region']);
 		echo $result;
@@ -89,7 +89,7 @@ class CContent extends CController
 
 
 		// Load the content module
-		$content = $this->module('Content');
+		$content = $this->load_module('Content');
 
 		// Get all the available pages from database
 		$pages[0] = '- New Page -';  
@@ -129,7 +129,7 @@ class CContent extends CController
 		$data['region']['content']['main'] .= "</form></fieldset>";
 		$data['region']['content']['main'] .= $form->validate_error();
 
-		$this->view('default/default_view', $data);
+		$this->load_view('default/default_view', $data);
 	}
 
 	public function addRegion()
@@ -204,7 +204,7 @@ class CContent extends CController
 // 		</div>
 // EOD;
 
-// 		$this->view('default/default_view', $data);
+// 		$this->load_view('default/default_view', $data);
 // 	}
 
 	

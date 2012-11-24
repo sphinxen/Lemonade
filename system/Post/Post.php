@@ -18,7 +18,10 @@ class Post {
 	{
 		global $cfg;
 		$this->tab_name = $cfg['db']['prefix'].$table_name;
-		$this->tab_parent = $cfg['db']['prefix'].$table_parent;
+		if($this->tab_parent == null)
+			$this->tab_parent = $this->tab_name;
+		else
+			$this->tab_parent = $cfg['db']['prefix'].$table_parent;
 		$this->tab_users = $cfg['db']['prefix'].$table_users;
 
 		global $db;
@@ -32,6 +35,8 @@ class Post {
 		
 	}
 
+	public function __destruct() { $this->db->close(); }
+
 	/**
 	 * Inserts a new post in the database
 	 * 
@@ -43,10 +48,10 @@ class Post {
 	 * @param integer $hidden    Decides whether the post should be visible(0) or not(1)
 	 */
 	public function add($post, $id_user, $id_parent = null, $locked = 0, $hidden = 0)
- 	{
+ 	{	
  		if(isset($this->tab_parent) && $id_parent > 0)
  		{ 
- 			$into = "id_{$this->tab_parent},";
+ 			$into = "id_parent,";
  			$value = "'{$id_parent}',";
 		}
 
@@ -66,10 +71,10 @@ EOD;
  	 */
  	public function setLock($id_post)
  	{
- 		$query = "UPDATE `{$this->tab_name}` SET `locked` = '0' WHERE `id` = `{$id_post}` LIMIT 1";
+ 		$query = "UPDATE `{$this->tab_name}` SET `locked` = NOT `locked` WHERE `id` = '{$id_post}' LIMIT 1";
  		$this->query($query);
 
- 		return $this->db->insert_id;
+ 		return $this->db->affected_rows;
  	}
 
  	/**
@@ -80,10 +85,10 @@ EOD;
  	 */
  	public function setVisible($id_post)
  	{
- 		$query = "UPDATE `{$this->tab_name}` SET `hidden` = '0' WHERE `id` = `{$id_post}` LIMIT 1";
+ 		$query = "UPDATE `{$this->tab_name}` SET `hidden` = NOT `hidden` WHERE `id` = '{$id_post}' LIMIT 1";
  		$this->query($query);
 
- 		return $this->db->insert_id;
+ 		return $this->db->affected_rows;
  	}
 
  	/**
@@ -98,6 +103,7 @@ EOD;
 			DELETE FROM {$this->tab_name} WHERE `id` = '{$id_post}' LIMIT 1;
 EOD;
 		$this->query($query);
+		
 		return $this->db->affected_rows;
  	}
 
@@ -113,7 +119,7 @@ EOD;
  		$query = "UPDATE {$this->tab_name} SET  post = '{$post}', edited = NOW() WHERE `id` = '{$id_post}' AND `locked` = '0' LIMIT 1";
  		$res = $this->query($query);
 
- 		return $this->db->insert_id;
+ 		return $this->db->affected_rows;
  	}
 
  	/**
@@ -126,9 +132,11 @@ EOD;
 	public function get($id_post)
 	{
 		$query = <<<EOD
-		SELECT `P`.*, `U`.`username` AS `author` FROM `{$this->tab_name}` AS `P`
+		SELECT `P`.`id`, `P`.`post`, `P`.`id_user`, `P` .`date`, `P`.`edited`, `P`.`locked`, `P`.`hidden`, `TP`.`id` AS `id_parent`, `U`.`email`, `U`.`username` AS `author`  FROM `{$this->tab_name}` AS `P`
 			LEFT JOIN `{$this->tab_users}` AS `U`
 			ON `P`.`id_user` = `U`.`id`	 
+			LEFT JOIN `{$this->tab_parent}` AS `TP`
+			ON `P`.`id_parent` = `TP`.`id`
 		WHERE `P`.`id` = '{$id_post}' AND `P`.`hidden` = '0' 
 EOD;
 	
@@ -142,17 +150,19 @@ EOD;
 	 * 
 	 * @return mixed         The query result containing all the posts
 	 */
-	public function getAll($limit = 30, $offset = 0)
+	public function getAll($limit = 30, $offset = 0, $order = "")
 	{
+		$order = !empty($order) ? "ORDER BY ".$order : "";
 		$query = <<<EOD
-		SELECT `P`.*, `U`.`username` AS `author` FROM `{$this->tab_name}` AS `P`
+		SELECT `P`.`id`, `P`.`post`, `P`.`id_user`, `P` .`date`, `P`.`edited`, `P`.`locked`, `P`.`hidden`, `TP`.`id` AS `id_parent`, `U`.`email`, `U`.`username` AS `author` FROM `{$this->tab_name}` AS `P`
 			LEFT JOIN `{$this->tab_users}` AS `U`
 			ON `P`.`id_user` = `U`.`id`	
-		LIMIT {$offset}, {$limit}
+			LEFT JOIN `{$this->tab_parent}` AS `TP`
+			ON `P`.`id_parent` = `TP`.`id`
+		WHERE `P`.`hidden` = '0' {$order} LIMIT {$offset}, {$limit}
 EOD;
 		return $this->query($query);
 	}
-
 
 	 public function search($string)
  	{
@@ -169,8 +179,8 @@ EOD;
  	private function createDB()
  	{
  		$parent = !empty($this->tab_parent) ? 
- 				"`id_{$this->tab_parent}` INT NOT NULL,
- 					CONSTRAINT FOREIGN KEY (`id_{$this->tab_parent}`) REFERENCES `{$this->tab_parent}`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE,"
+ 				"`id_parent` INT NULL,
+ 					CONSTRAINT FOREIGN KEY (`id_parent`) REFERENCES `{$this->tab_parent}`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,"
  					: "";
 
  		$query = <<<EOD
@@ -179,7 +189,7 @@ EOD;
  				`id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
  				`post` LONGTEXT NOT NULL,
  				`id_user` INT NULL,
- 					CONSTRAINT FOREIGN KEY (`id_user`) REFERENCES `{$this->tab_users}`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+ 					CONSTRAINT FOREIGN KEY (`id_user`) REFERENCES `{$this->tab_users}`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
  				{$parent}
  				`date` DATETIME NOT NULL DEFAULT 0,
  				`edited` DATETIME NULL,
@@ -202,7 +212,7 @@ EOD;
  	{
  		$this->db->connect();
 		$res = $this->db->query($query);
-		$this->db->close();
+
 		return $res;
  	}
 }

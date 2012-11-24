@@ -1,8 +1,14 @@
 @import url("blueprint/screen.css");
 
+
 body {
 	background-color: #BFBFB0;
 }
+
+fieldset {
+	border:1px solid #ccc;
+}
+
 
 #header {
 	width: 100%;
@@ -46,6 +52,18 @@ body {
 #main-nav a:hover{text-decoration: underline;}
 #main-nav a:active{}
 
+
+*[class*='span'] {
+	float: left;
+}
+
+.span-6 {
+	width: 230px;
+}
+.span-11 {
+	width:430px;
+}
+
 .inline-block{
 	display: inline-block !important;
 }
@@ -61,5 +79,15 @@ body {
 	padding: 2px;
 }
 .post div:first-child {
-	background: gray;
+	background: #EAB885;
+}
+.clearfix:after, .container:after {
+	content:"\0020";
+	display:block;
+	height:0;
+	clear:both;
+	visibility:hidden;
+	overflow:hidden;}
+.clearfix, .container {
+	display:block;
 }

@@ -25,7 +25,7 @@ class CUser extends CController
 		$data = $cfg['data'];
 
 		// Load the content module
-		$content = $this->module('Content');
+		$content = $this->load_module('Content');
 
 		// Load all the page data from database
 		$data['region'] = $content->get_all_content('home');
@@ -55,13 +55,13 @@ class CUser extends CController
 
 		$data['region']['content']['main'] = $login_menu;
 
-		$this->view('default/default_view', $data);
+		$this->load_view('default/default_view', $data);
 	}
 	public function logout()
 	{
 		$this->user->logout();
 
-		redirect('index');
+		redirect($cfg['default_page']);
 	}
 	
 	public function login()
@@ -73,13 +73,13 @@ class CUser extends CController
 
 		if($form->validate())
 		{
-			$user_module = $this->module('Login');
+			$user_module = $this->load_module('Login');
 
-			if($user_module->login($_POST['user'], $_POST['password']))	
-				redirect('index');
+			if($user_module->login($_POST['user'], $_POST['password']))
+				redirect($cfg['default_page']);
 			else
 				redirect('user');
-		}		
+		}
 		else
 			redirect('user');
 	}

@@ -1,6 +1,6 @@
-<?php $this->view('heads/html5');?>
+<?php $this->load_view('heads/html5');?>
 <body>
-	<div id='container' class='span-24'>
+	<div id='container' class='wrapper span-24'>
 		<div id='header'>
 			<?php echo !empty($menu['user']) ? $this->menu->GenerateNavigation($menu['user']) : '';?>
 			<div class="logo clearfix">
@@ -26,4 +26,4 @@
 	 			<?php echo $login_menu;?>
 	 		</div>
 		</div>
-<?php $this->view('footers/default_footer');
+<?php $this->load_view('footers/default_footer');

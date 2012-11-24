@@ -5,17 +5,17 @@
         <link rel="icon" type="image/ico" href="<?php echo BASE;?>assets/images/favicon.ico" />
         <link rel="shortcut icon" href="<?php echo BASE;?>assets/images/favicon.ico" />
 
-        <meta http-equiv="Content-Type" content="text/html; charset='ISO-8859-4'" />
+        <meta charset="UTF-8"/>
 
         <?php foreach ($stylesheets as $stylesheet) :?>
         <link rel="stylesheet" type="text/css" href="<?php echo $stylesheet;?>" media="screen" />
         <?php endforeach;?>
 
-        <script type="text/javascript">
-                var BASE_URL = '<?php echo BASE; ?>';
-        </script> 
-        <?php foreach ($javascripts as $javascript) :?>
-        <script src="<?php echo $javascript;?>" type="text/javascript"></script>
-        <?php endforeach;?>
+        
+        <link rel="stylesheet/less" type="text/css" href="<?php echo BASE;?>assets/css/style.less" media="screen" />
+        
+
+        <script type="text/javascript" src="<?php echo BASE;?>assets/js/less-min.js"></script>
+        <script type="text/javascript">var BASE_URL = '<?php echo BASE; ?>';</script> 
 
 </head>

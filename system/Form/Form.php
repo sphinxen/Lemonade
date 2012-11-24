@@ -48,11 +48,15 @@ class Form
     */
 	public function textarea($attributes = array('name' => 'default'))
 	{
+        if(isset($attributes['value'])){
+            $value = $attributes['value'];
+            unset($attributes['value']);
+        }
         $openTag='<textarea ';
         $closeChar='>';
         $closeTag='</textarea>';
 
-        return $openTag.$this->elemAttributes($attributes).$closeChar.$closeTag;
+        return $openTag.$this->elemAttributes($attributes).$closeChar.$value.$closeTag;
     }
 
     /**
