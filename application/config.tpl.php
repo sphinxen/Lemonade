@@ -36,6 +36,8 @@ $cfg = array(
 	,'error' => array('class' => 'CError', 'core' => TRUE, 'enabled' => TRUE)
 	,'setup' => array('class' => 'CSetup', 'core' => TRUE, 'enabled' => TRUE)
 	,'content' => array('class' => 'CContent', 'core' => TRUE, 'enabled' => TRUE)
+	,'login' => array('class' => 'CLogin', 'core' => TRUE, 'enabled' => TRUE)
+	,'user' => array('class' => 'CUser', 'core' => TRUE, 'enabled' => TRUE)
 	)
 
 /**
