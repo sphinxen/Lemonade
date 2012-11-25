@@ -22,22 +22,14 @@ class Default_controller extends CController
 
 		// Load modules
 		$content = $this->load_module('Content');
-		$gb = $this->load_module('Blogg');
 
 		// Load all the page data from database
-	//	$data['region'] = $content->get_all_content('guestbook');	
+		$data['region'] = $content->get_all_content('home');
 
 		/*
 		*	Pagedata goes here
 		*/
 
-		$data['region']['content']['main'] = $gb->getBlogg();
-
 		$this->load_view('default/default_view', $data);
-	}
-
-	public function save()
-	{
-
 	}
 }
