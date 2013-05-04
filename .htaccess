@@ -1,7 +1,6 @@
 <IfModule mod_rewrite.c>
 	#Options +FollowSymLinks  -MultiViews
 	RewriteEngine on
-	RewriteBase /
 
 	# If the URI is not .htm and doesn't have any additonal params, try .htm
 #	RewriteCond %{REQUEST_FILENAME} !-d
