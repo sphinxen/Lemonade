@@ -17,12 +17,25 @@ class CSetup extends CController
 	public function index()
 	{
 		global $db;
+		global $cfg;
+
 		if($db->connect_error)
 		{
-			$data['content']['main'] = "<p>In order for Lemonade to work proporly a database connection needs to be asstablished.
-			<br />Open <strong>" . ROOT.'core/config.php'. "</strong> and enter the data to your database.";
-		}
+			switch ($db->connect_errno) {
+				case '1045':
+					$message = "Access denied for user \"{$cfg['db']['username']}\" and password \"{$cfg['db']['password']}\". Please verify username and password.";
+					break;
+				case '2005':
+					$message = "Unable to connect to \"{$cfg['db']['server']}\". Please verify the server address.";
+					break;
+				default:
+					$message = $db->connect_error;
+					break;
+			}
 
+			$data['content']['main'] = "<h3><strong>Database connection error</strong></h3><p>".$message."</p><p>In order for Lemonade to work proporly a database connection needs to be asstablished.
+					<br />Open <strong>application/config.php</strong> within the install directory and enter your database information.";
+		}
 		elseif(!$db->table_exists('users'))
 		{
 			$data['stylesheets'] = array(BASE.'assets/css/stylesheet.css');
@@ -38,12 +51,11 @@ class CSetup extends CController
 			$form->set_validate_rules("confirm_pass", "Confirm Password", "trim|required");
 
 
-			
 			if($form->validate())
 			{
 				$this->create_database();
 			}
-			
+
 
 
 			$user_form = $form->start(null, "block");
@@ -64,6 +76,7 @@ class CSetup extends CController
 
 			$data['content']['main'] = $user_form;
 		}
+
 		$this->load_view('default/default_view', $data);
 	}
 
