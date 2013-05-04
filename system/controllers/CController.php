@@ -46,7 +46,7 @@ abstract class CController implements IController
 		{
 			$this->data = $data;
 		}
-	
+
 		extract($data);
 		extract($region);
 
@@ -97,21 +97,21 @@ abstract class CController implements IController
 	}
 
 	/**
-	*	Loads the module to handle the database requests
+	*	Loads the model to handle the database requests
 	*
-	*	@param string $module Name of the module to be loaded, with relative path but without extention
+	*	@param string $model Name of the model to be loaded, with relative path but without extention
 	*/
-	protected function load_module($module)
+	protected function load_model($model)
 	{
-		if(is_file(ROOT."application/modules/{$module}.php"))
+		if(is_file(ROOT."application/models/{$model}.php"))
 		{
-			require_once(ROOT."application/modules/{$module}.php");
-			return new $module;
+			require_once(ROOT."application/models/{$model}.php");
+			return new $model;
 		}
-		elseif(is_file(ROOT."system/modules/{$module}.php"))
+		elseif(is_file(ROOT."system/models/{$model}.php"))
 		{
-			require_once(ROOT."system/modules/{$module}.php");
-			return new $module;
+			require_once(ROOT."system/models/{$model}.php");
+			return new $model;
 		}
 	}
 

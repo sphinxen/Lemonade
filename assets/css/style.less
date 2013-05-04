@@ -188,3 +188,39 @@ a{
 		&:first-child {background: @bg-head;}
 	}
 }
+
+// SHOP
+table{width: auto;
+  td{vertical-align: top;}
+}
+
+#cart{border: 1px solid #999;border-radius:4px;padding:4px;width: 300px;min-height:200px;float:right;font-size: smaller;
+  h2{border-bottom:1px solid #ccc;font-weight: bold;margin-bottom:@magic-number/2;}
+  #status{font-style: italic;}
+} 
+
+
+#submit_message {
+	color:white;
+	.succeed{background-color: green;.border-radius(10px);padding:5px;}
+	.error{background-color: red;.border-radius(10px);padding:5px;}
+}
+
+form{
+	input.error{border: 1px solid red}
+	span{
+		width: 45%;
+		display: inline-block;
+		vertical-align: top;
+		span{
+			width:100%;
+			padding-top:1em;
+			label{display:inline;}
+		}
+		label{display: block; font-weight: 	bold; padding-top:1em;}
+		&.form_wrapper{
+				width: 100%;
+				display: inline-block;
+			}
+		}
+}

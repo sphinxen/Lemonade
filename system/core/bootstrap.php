@@ -29,7 +29,7 @@ function __autoload($aClassName)
         $file1 = ROOT . "system/controllers/{$aClassName}.php";
         $file2 = ROOT . "application/controllers/{$aClassName}.php";
         $file3 = ROOT . "system/{$aClassName}/{$aClassName}.php";
-        $file4 = ROOT . "system/modules/{$aClassName}.php";
+        $file4 = ROOT . "system/models/{$aClassName}.php";
         if(is_file($file1))
                 require_once($file1);
         elseif(is_file($file2))

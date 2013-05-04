@@ -14,7 +14,7 @@ class CBlogg extends CController
 	public function __construct()
 	{
 		parent::__construct();
-		$this->blogg = $this->load_module('Blogg');
+		$this->blogg = $this->load_model('Blogg');
 		$this->template = 'templates/post';
 	}
 
@@ -99,6 +99,14 @@ class CBlogg extends CController
 		$this->load_view('default/default_view', $data);
 	}
 
+	/**
+	 * Creates a form for create and update posts
+	 *
+	 * @param  integer $post_id ID of the post to be edited, -1 if new post
+	 * @param  integer $comment ID of the comment to be edite, -1 if new comment
+	 * @param  boolean $edit    Flag for edit, false if new post
+	 * @return string           Return a html form
+	 */
 	private function form($post_id = -1, $comment = -1, $edit = false)
 	{
 		$form = new Form();
@@ -142,6 +150,15 @@ class CBlogg extends CController
 	}
 
 
+	/**
+	 * Returns the view of a post template
+	 *
+	 *
+	 * @param  mix[]  $data  An array of post data
+	 * @param  string $id    The post id
+	 * @param  string $class A class name för style
+	 * @return string        A html post template
+	 */
 	private function postFormat($data, $id = "post", $class = "post")
 	{
 		global $cfg;
@@ -163,25 +180,6 @@ class CBlogg extends CController
 		$data['class'] = $class;
 
 		return $this->load_view($this->template, $data, TRUE);
-	}	
+	}
 }
 
-		// global $cfg;
-
-		// // Check the search path of this controller
-		// foreach ($cfg['controllers'] as $path => $value) {
-		// 	if($value['class'] == get_class($this)) {
-		// 		$data['url'] = '/'.$path;
-		// 		break;
-		// 	}
-		// }
-
-		// // include gravatar
-		// $data['grav_url'] = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $data['email'] ) ) ) . "?d=mm&s=80";
-
-		// $data['post_id'] = $data['id'];
-
-		// $data['id'] = $id;
-		// $data['class'] = $class;
-
-		// return $this->load_view('templates/post', $data, TRUE);

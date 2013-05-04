@@ -24,8 +24,8 @@ class CUser extends CController
 		global $cfg;
 		$data = $cfg['data'];
 
-		// Load the content module
-		$content = $this->load_module('Content');
+		// Load the content model
+		$content = $this->load_model('Content');
 
 		// Load all the page data from database
 		$data['region'] = $content->get_all_content('home');
@@ -73,9 +73,9 @@ class CUser extends CController
 
 		if($form->validate())
 		{
-			$user_module = $this->load_module('Login');
+			$user_model = $this->load_model('Login');
 
-			if($user_module->login($_POST['user'], $_POST['password']))
+			if($user_model->login($_POST['user'], $_POST['password']))
 				redirect($cfg['default_page']);
 			else
 				redirect('user');

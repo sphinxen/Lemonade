@@ -27,8 +27,8 @@ class CContent extends CController
 		$data = $cfg['data'];
 
 
-		// Load the content module
-		$content = $this->load_module('Content');
+		// Load the content model
+		$content = $this->load_model('Content');
 
 		// Get all the available pages from database
 		foreach ($content->get_pages() as $key) 
@@ -74,8 +74,8 @@ class CContent extends CController
 	 */
 	public function get_content()
 	{
-		// Load the content module
-		$content = $this->load_module('Content');
+		// Load the content model
+		$content = $this->load_model('Content');
 
 		$result = $content->get_content($_POST['id_page'], $_POST['id_region']);
 		echo $result;
@@ -88,8 +88,8 @@ class CContent extends CController
 		$data = $cfg['data'];
 
 
-		// Load the content module
-		$content = $this->load_module('Content');
+		// Load the content model
+		$content = $this->load_model('Content');
 
 		// Get all the available pages from database
 		$pages[0] = '- New Page -';  

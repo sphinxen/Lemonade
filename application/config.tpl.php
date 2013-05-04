@@ -23,7 +23,7 @@ $cfg = array(
 
 /** 
 *	Defines the controllers
-*	
+*
 *	'core' attribute decides if the controller is part of the Lemonade core. 
 *	If set to FALSE a navigation menu is able to be generated.
 *

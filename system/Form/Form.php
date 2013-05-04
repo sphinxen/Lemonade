@@ -143,7 +143,8 @@ class Form
                         break;
 
                     case 'email':
-
+                        if(!filter_var($_POST[$field], FILTER_VALIDATE_EMAIL))
+                            $this->error[] = "{$this->rules[$field]['name']} is not an email. <br />";
                         break;
 
                     case 'required':

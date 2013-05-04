@@ -78,18 +78,18 @@ class Lemonade_blender implements ISingleton
 
 
 		//	Check if the requested controller exists and that it's a subclass of CController
-		$moduleExists = isset($cfg['controllers'][$controller]);
+		$modelExists = isset($cfg['controllers'][$controller]);
 		$classExists = FALSE;
 		$classEnable = FALSE;
 
-		if($moduleExists)
+		if($modelExists)
 		{
 			$class = $cfg['controllers'][$controller]['class'];
 			$classExists = class_exists($class);
 			$classEnable = $cfg['controllers'][$controller]['enabled'];
 		}
 
-		if($moduleExists && $classExists && $classEnable)
+		if($modelExists && $classExists && $classEnable)
 		{
 			$rc = new ReflectionClass($class);
 			if($rc->isSubclassOf('CController'))

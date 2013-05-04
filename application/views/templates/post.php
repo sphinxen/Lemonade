@@ -22,7 +22,7 @@ if(!defined('BASE')) die('No direct access!');
 		<div>Last edited: <?php echo $edited;?></div>
 	<?php endif;?>
 	<br/>
-	<p><a href="<?php echo $url;?>/add/<?php echo $post_id;?>/0">comment</a></p>
+	<p><a href="<?php echo $url;?>/add/<?php echo $post_id;?>/0">comment</a> - currentyl unavailable for non registred users</p>
 
 </div>
 <hr />
