@@ -19,11 +19,11 @@ class CSetup extends CController
 		global $db;
 		if($db->connect_error)
 		{
-			echo "<p>In order for Lemonade to work proporly a database connection needs to be asstablished.
+			$data['content']['main'] = "<p>In order for Lemonade to work proporly a database connection needs to be asstablished.
 			<br />Open <strong>" . ROOT.'core/config.php'. "</strong> and enter the data to your database.";
 		}
 
-		if(!$db->table_exists('users'))
+		elseif(!$db->table_exists('users'))
 		{
 			$data['stylesheets'] = array(BASE.'assets/css/stylesheet.css');
 			$data['logo'] = BASE.'assets/images/logo.svg';
@@ -63,9 +63,8 @@ class CSetup extends CController
 			$user_form .= $form->validate_error();
 
 			$data['content']['main'] = $user_form;
-
-			$this->load_view('default/default_view', $data);
 		}
+		$this->load_view('default/default_view', $data);
 	}
 
 	/**

@@ -26,18 +26,17 @@ else
  */
 function __autoload($aClassName)
 {
-        $file1 = ROOT . "system/controllers/{$aClassName}.php";
-        $file2 = ROOT . "application/controllers/{$aClassName}.php";
-        $file3 = ROOT . "system/{$aClassName}/{$aClassName}.php";
-        $file4 = ROOT . "system/models/{$aClassName}.php";
-        if(is_file($file1))
-                require_once($file1);
-        elseif(is_file($file2))
-                require_once($file2);
-        elseif(is_file($file3))
-        	require_once($file3);
-        elseif(is_file($file4))
-                require_once($file4);
+    $files = array("system/controllers/{$aClassName}.php"
+            ,"application/controllers/{$aClassName}.php"
+            ,"system/{$aClassName}/{$aClassName}.php"
+            ,"system/models/{$aClassName}.php");
+
+    foreach ($files as $file) {
+       if(is_file(ROOT.$file)){
+            require_once($file);
+            break;
+       }
+    }
 }
 
 /**
