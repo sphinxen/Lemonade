@@ -14,7 +14,9 @@ class Content
 		global $db;
 		$query = "SELECT `R`.`id`, `R`.`region`, `RP`.`region` AS `parent` FROM `{$cfg['db']['prefix']}regions` AS `R`
 					LEFT JOIN `{$cfg['db']['prefix']}regions` AS `RP`
-						ON `R`.`id_parent_region` = `RP`.`id`";
+						ON `R`.`id_parent_region` = `RP`.`id`
+						WHERE `R`.`editable` = 1";
+
 		$db->connect();
 		$result = $db->query($query);
 		$db->close();
