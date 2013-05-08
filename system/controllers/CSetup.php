@@ -1,13 +1,22 @@
 <?php
 /**
+*	Part of Lemonade base controllers
 *
-*	@author Josef Karlsson <sphinxen83@gmail.com>
-*	@package Lemonade
+*	@package    Lemonade
+*	@subpackage Core
+*	@author     Josef Karlsson <sphinxen83@gmail.com>
+*	@link       (Sphinxen.se, http://www.sphinxen.se)
 */
 
 if(!defined('BASE')) die('No direct access!');
 
-class CSetup extends CController 
+/**
+ * Setup controller for quick step by step setup
+ *
+ * @package    Lemonade
+ * @subpackage Controller
+ */
+class CSetup extends CController
 {
 	public function __construct()
 	{
@@ -33,8 +42,8 @@ class CSetup extends CController
 					break;
 			}
 
-			$data['content']['main'] = "<h3><strong>Database connection error</strong></h3><p>".$message."</p><p>In order for Lemonade to work proporly a database connection needs to be asstablished.
-					<br />Open <strong>application/config.php</strong> within the install directory and enter your database information.";
+			$data['content']['main'] = "<h3><strong>Database connection error</strong></h3><p>".$message."</p><p>In order for Lemonade to work proporly a database connection needs to be established.
+					<br />Open <strong>application/config.php</strong> within the install directory and enter your database information.</p><p>Also verify that the database exists and that you have the right to access it.</p>";
 		}
 		elseif(!$db->table_exists('users'))
 		{
