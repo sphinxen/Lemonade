@@ -153,7 +153,8 @@ class CSetup extends CController
 				`id` INT PRIMARY KEY AUTO_INCREMENT,
 				`id_parent_region` INT NULL,
 					CONSTRAINT FOREIGN KEY (`id_parent_region`) REFERENCES `{$cfg['db']['prefix']}regions`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-				`region` VARCHAR(64) NOT NULL
+				`region` VARCHAR(64) NOT NULL,
+				`editable` TINYINT NOT NULL DEFAULT '1'
 			);
 
 			CREATE TABLE IF NOT EXISTS `{$cfg['db']['prefix']}page_data`
@@ -174,15 +175,15 @@ class CSetup extends CController
 				VALUES 
 					('{$_POST['username']}', '{$_POST['email']}', '{$salt}{$_POST['password']}');
 
-			INSERT INTO `{$cfg['db']['prefix']}regions` (`id`, `id_parent_region`, `region`)
+			INSERT INTO `{$cfg['db']['prefix']}regions` (`id`, `id_parent_region`, `region`, `editable`)
 				VALUES
-					 (1, NULL, 'header')
-					,(2, 1, 'logo')
-					,(3 , NULL, 'content')
-					,(4, 3, 'left')
-					,(5, 3, 'main')
-					,(6, 3, 'right')
-					,(7, NULL, 'footer');
+					 (1, NULL, 'header', 1)
+					,(2, 1, 'logo', 1)
+					,(3 , NULL, 'content', 0)
+					,(4, 3, 'left', 1)
+					,(5, 3, 'main', 1)
+					,(6, 3, 'right', 1)
+					,(7, NULL, 'footer', 1);
 EOD;
 
 

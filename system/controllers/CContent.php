@@ -6,7 +6,7 @@
 */
 
 if(!defined('BASE')) die('No direct access!');
-if(!isset($_SESSION['user'])) die('Not logged in!');
+if(!isset($_SESSION['user'])) header("Location: http://" . $_SERVER['HTTP_HOST'] . BASE );
 
 class CContent extends CController 
 {

@@ -77,6 +77,14 @@ $cfg = array(
 						'Manage Content' => array('path' => BASE.'content/', 'id' => NULL, 'class' => NULL)
 						)
 				)
+
+		,'user' => array(
+					'id' => 'user-nav'
+					,'class' => NULL
+					,'items' => array(
+						'Logout' =>  array('path' => BASE.'user/logout', 'id' => NULL, 'class' => NULL)
+						)
+				)
 		)
 
 	// Defines slylesheets
