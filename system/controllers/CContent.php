@@ -1,4 +1,4 @@
-<?php  
+<?php
 /**
 *
 *	@author Josef Karlsson <sphinxen83@gmail.com>
