@@ -30,6 +30,6 @@ class Default_controller extends CController
 		*	Pagedata goes here
 		*/
 
-		$this->load_view('default/default_view', $data);
+		$this->load_view('default', $data);
 	}
 }

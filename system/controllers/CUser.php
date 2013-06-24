@@ -55,7 +55,7 @@ class CUser extends CController
 
 		$data['region']['content']['main'] = $login_menu;
 
-		$this->load_view('default/default_view', $data);
+		$this->load_view('default', $data);
 	}
 	public function logout()
 	{

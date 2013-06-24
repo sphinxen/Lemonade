@@ -64,7 +64,7 @@ class CSetup extends CController
 
 			$data['content']['main'] = $user_form;
 
-			$this->load_view('default/default_view', $data);
+			$this->load_view('default', $data);
 		}
 	}
 
@@ -84,7 +84,7 @@ class CSetup extends CController
 
 		$data['logo'] = BASE.'assets/images/logo.svg';
 
-		$this->load_view('default/default_view', $data);
+		$this->load_view('default', $data);
 	}
 
 	private function create_database()

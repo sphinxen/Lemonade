@@ -49,7 +49,7 @@ function redirect($url)
 {
     if(preg_match_all('/(http:\/\/|ftp:\/\/|https:\/\/)([^ \s\t\r\n\v\f]*)\.([A-Za-z]*)/', $url))
     	header('location: '.$url);
-    header('location: '. BASE . $url);
+    header('location: '. BASE . preg_replace('/^\\//', "", $url));
 }
 
 interface ISingleton

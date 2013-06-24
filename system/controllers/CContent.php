@@ -60,12 +60,12 @@ class CContent extends CController
 		$data['region']['content']['main'] .= "<lable>Select region <a class='right' href=".BASE."content/addRegion'>Add region</a></lable>";
 		$data['region']['content']['main'] .= $form->select($regions, array('style' => 'width:100%', 'name' => 'region'));
 		$data['region']['content']['main'] .= "<lable></lable>";
-		$data['region']['content']['main'] .= $form->textarea(array('class' => 'wymeditor','name' => 'data'));
+		$data['region']['content']['main'] .= $form->textarea(array('class' => 'ckeditor','name' => 'data'));
 		$data['region']['content']['main'] .= "<lable></lable>";
 		$data['region']['content']['main'] .= $form->input('submit', array('value' => 'Save', 'style' => 'width:100%'));
 		$data['region']['content']['main'] .= "</form></fieldset>";
 
-		$this->load_view('default/default_view', $data);
+		$this->load_view('default', $data);
 	}
 
 	/**
@@ -73,11 +73,11 @@ class CContent extends CController
 	 * @return [type] [description]
 	 */
 	public function get_content()
-	{
+	{//echo "string";
 		// Load the content model
 		$content = $this->load_model('Content');
 
-		$result = $content->get_content($_POST['id_page'], $_POST['id_region']);
+		$result = $content->get_content($_REQUEST['id_page'], $_REQUEST['id_region']);
 		echo $result;
 	}
 
@@ -129,7 +129,7 @@ class CContent extends CController
 		$data['region']['content']['main'] .= "</form></fieldset>";
 		$data['region']['content']['main'] .= $form->validate_error();
 
-		$this->load_view('default/default_view', $data);
+		$this->load_view('default', $data);
 	}
 
 	public function addRegion()
@@ -204,7 +204,7 @@ class CContent extends CController
 // 		</div>
 // EOD;
 
-// 		$this->load_view('default/default_view', $data);
+// 		$this->load_view('default', $data);
 // 	}
 
 	

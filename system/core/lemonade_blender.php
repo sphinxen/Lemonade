@@ -58,6 +58,10 @@ class Lemonade_blender implements ISingleton
 
 		$db->connect();
 
+		if(strstr($_SERVER['REQUEST_URI'], '?')){
+			redirect(str_replace('?', '&', $_SERVER['REQUEST_URI']));
+		}
+
 		// 	Check if a connection to the database could be established and that application/controller folder is writable,
 		//  otherwise load the setup page
 		if( $db->connect_error || !$db->table_exists('users') )
@@ -71,7 +75,11 @@ class Lemonade_blender implements ISingleton
 		$segment[1] = !empty($segment[1]) ? $segment[1] : 'index';
 
 		$controller = $segment[0];
-		$action = $segment[1];
+		// if(strstr($segment[1], '&'))
+			$action = strstr($segment[1], '&') ? substr($segment[1], 0, strpos($segment[1], '&')) : $segment[1];
+		// else
+			// $action = $segment[1];
+
 		$args = $segment;
 		unset($args[0]);
 		unset($args[1]);
