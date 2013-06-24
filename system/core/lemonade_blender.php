@@ -78,18 +78,14 @@ class Lemonade_blender implements ISingleton
 
 
 		//	Check if the requested controller exists and that it's a subclass of CController
-		$modelExists = isset($cfg['controllers'][$controller]);
+		$routExists = isset($cfg['routes'][$controller]);
 		$classExists = FALSE;
 		$classEnable = FALSE;
 
-		if($modelExists)
-		{
-			$class = $cfg['controllers'][$controller]['class'];
-			$classExists = class_exists($class);
-			$classEnable = $cfg['controllers'][$controller]['enabled'];
-		}
+		$class = $routExists ? $cfg['routes'][$controller] : $controller;
+		$classExists = class_exists($class);
 
-		if($modelExists && $classExists && $classEnable)
+		if($classExists)
 		{
 			$rc = new ReflectionClass($class);
 			if($rc->isSubclassOf('CController'))
@@ -100,10 +96,10 @@ class Lemonade_blender implements ISingleton
 					$method = $rc->getMethod($action);
 					$method->invokeArgs($controllerObj, $args);
 				}
-				else
-					header('location: http://' . $_SERVER['SERVER_NAME'] . BASE. 'error/e404');
+				// else
+					// header('location: http://' . $_SERVER['SERVER_NAME'] . BASE. 'error/e404');
 			}
 		}
-		else header('location: http://'. $_SERVER['SERVER_NAME'] . BASE. 'error/e404');
+		// else header('location: http://'. $_SERVER['SERVER_NAME'] . BASE. 'error/e404');
 	}
 }

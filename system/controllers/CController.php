@@ -86,8 +86,13 @@ abstract class CController implements IController
 		$logo = BASE.'assets/images/logo.svg';
 
 		// Fetches the view and store the page in a variable
+		if(is_file(ROOT."application/views/".$view."/index.php"))
+			$view = ROOT."application/views/".$view."/index.php";
+		elseif(is_file(ROOT."application/views/".$view.".php"))
+			$view = ROOT."application/views/{$view}.php";
+
 		ob_start(); 
-			require(ROOT."application/views/{$view}.php");
+			require($view);
 		$page = ob_get_clean();
 
  		// Process the code and return or print the final page

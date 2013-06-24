@@ -1,4 +1,6 @@
 @import "base.less";
+@import "animations.less";
+
 
 /** --------------------------------------------------------------
  * Colors.
@@ -13,10 +15,6 @@
 @grey:#555;
 @greyLight:#999;
 @greyLighter:#eee;
-@bg:#BFBFB0;
-@bg-content:#F9F9DC;
-@bg-head:#EAB885;
-@menu-color:#FFF9B5;
 @max-width: 940px;
 
 
@@ -27,200 +25,62 @@
 .yellow{color:@yellow;}
 .orange{color:@orange;}
 
+.right{float:right;}
+.left{float:left;}
 
-/** --------------------------------------------------------------
- * Page layout.
- * HTML tags
- */
-body{max-width:@max-width;margin:8px auto;background-color:@bg;}
-h2{font-size: 150%;font-weight: bold;}
-h4{font-size: 110%;font-weight: bold;}
-h5{font-weight: bold;}
+aside .html5 {
+	position: absolute;
+	top: 10vh;
+	width: 38px;
+	height:106px;
+}
+
 a{
- 		text-decoration: none;
-		color:@grey;
-		&:hover{
-			color:lighten(@grey,20%);
-			text-decoration: underline;
-		}
- 	}
+	.transition(all,0.2s);
+	&:link{text-decoration: none;color:@greyLight;}
+	&:visited{color:@greyLight;}
+	&:hover{color:@black;.transition(all,0.2s)}
+}
 
-/** --------------------------------------------------------------
-* Header
-*
-*/
-#header {
-	width: 100%;
-	.gradient(@bg-head,@grey,98%, 100%);//background-color: @bg-head;
+nav{
 	display: inline-block;
-	margin: 0px;
+	width:20%;
+	ul{
+		list-style: none;
+		li{
+			a{width: 100%}
+			position: relative;
 
-	.logo{
-		span{
-			font-family: courier, monospace, sans-serif;
-			color: @menu-color;
-			font-size: 8em;
-			padding-left:5px;
-			//margin-bottom: 0em;
+			.transition(all,0.2s);
+
+			&:nth-child(odd){right: -10px; bottom: 0;}
+			&:nth-child(even){right: 10px; bottom: 0;}
+			&:hover{right:0;bottom:0; .transition(all,0.2s);}
+			&.active{right:0;left:0;a{color:@black;}}
 		}
 	}
 }
 
-/** --------------------------------------------------------------
- * Menu
- *
- */
- *[id*='nav'] ul{list-style-type: none;}
-
- #main-nav {
- 	a{
- 		text-decoration: none;
-		font-size: 3em;
-		color:@menu-color;
-		padding: 0.5em;
-		&:hover{
-			color:lighten(@menu-color,20%);
-			text-decoration: underline;
-		}
- 	}
- }
-
-/** --------------------------------------------------------------
- * Boxes.
- * 
- */
- #container, .wrapper{
- 	border: 1px solid @greyLight;
- 	margin:2em auto;
- 	.gradient(@bg-head,@bg-content,3em);
- 	min-height:10em;
- 	border:1px solid @greyLight; 
- 	padding: 1em 0;
-	.border-radius(10px);
-	.box-shadow();
-	.head{
-		height: 2em; 
-		position: relative; 
-		right: 1em; 
-		width:(@max-width - 33%); 
-		padding:0 1em;
-	}
-	#content{
-		padding:1em;
-		.clearfix();
-	}
-}
-
-
-/** --------------------------------------------------------------
- * Footer.
- * 
- */
-@color:lighten(@grey,10%);
-#footer{
-	font-size:smaller;
-	color:@color;
-	margin-top:@magic-number;
-	padding:0.5em;
-
-  	a{
-  		color:@color;
-  		text-decoration:none;
-    	&:hover{
-    		color:lighten(@color,20%);
-    		text-decoration:underline;
-    	}
-  	}
-  	div[id^="bottom-"] {
-  		width:30%;
-  		padding:0 1em;
-  		cite{font-style:italic;}
-  	}
-
-
-  	.bottom{
-	padding-top: 0.5em;
-	border-top: 1px ridge @greyLight;
-//	.gradient(@greyLight,@bg,0%, 15%);
-	//.border-radius();
-	}
-}
-
-.left { float: left !important;}
-.right {float: right !important;}
-
-.align-center {text-align: center;}
-.align-right{text-align: right;}
-//*/
-
-
-*[class*='span'] {
-	float: left;
-}
-
-.span-6 {
-	width: 230px;
-}
-.span-11 {
-	width:630px;
-}
-
-.inline-block{
-	display: inline-block !important;
-}
-
-.block label {
-	display: block;
-}
-
-.post {
-	padding: 3px;
+footer {
 	div{
-		.border-radiusx(10px, 10px);
-		&.post-headline{
-			img {margin-right: 1em;}
-			.box-shadow(); 
-			border: 1px solid @greyLight;
-			padding: 1em;
-			margin-bottom: 1em; 
-		}
-		padding: 3px;
-		&:first-child {background: @bg-head;}
+		display:inline-block;
+		border-top: 1px solid @greyLighter;
+		padding-top: 1em;
+		vertical-align: top;
+		width: 30%;
 	}
 }
 
-// SHOP
-table{width: auto;
-  td{vertical-align: top;}
+
+#base-container{
+	max-width: 1180px;
 }
 
-#cart{border: 1px solid #999;border-radius:4px;padding:4px;width: 300px;min-height:200px;float:right;font-size: smaller;
-  h2{border-bottom:1px solid #ccc;font-weight: bold;margin-bottom:@magic-number/2;}
-  #status{font-style: italic;}
-} 
-
-
-#submit_message {
-	color:white;
-	.succeed{background-color: green;.border-radius(10px);padding:5px;}
-	.error{background-color: red;.border-radius(10px);padding:5px;}
+.container {
+	margin: 0px auto;
+	padding:10px;
+	position: relative;
 }
 
-form{
-	input.error{border: 1px solid red}
-	span{
-		width: 45%;
-		display: inline-block;
-		vertical-align: top;
-		span{
-			width:100%;
-			padding-top:1em;
-			label{display:inline;}
-		}
-		label{display: block; font-weight: 	bold; padding-top:1em;}
-		&.form_wrapper{
-				width: 100%;
-				display: inline-block;
-			}
-		}
-}
+.content{
+	display: inline-block;}

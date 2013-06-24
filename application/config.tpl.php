@@ -21,24 +21,21 @@ $cfg = array(
 		,'prefix' 	=> ''
 	)
 
-/** 
-*	Defines the controllers
+/**
+*	Routing settings
 *
-*	'core' attribute decides if the controller is part of the Lemonade core. 
-*	If set to FALSE a navigation menu is able to be generated.
+* 	Defines a controller to be redirected to. The key represents the URL request.
+* 	The value can either be a controller class or a relative URL.
 *
-*	'enabled' attribue decides if the controller is enable.
-*	If set to FALSE the controller won't be able to load.
+* 	@example 'home' => 'away' or 'home' => 'CSetup'
 */
-,'controllers' => array(
-	 'index' => array('class' => 'default_controller', 'core' => FALSE, 'enabled' => TRUE)
-
-	,'error' => array('class' => 'CError', 'core' => TRUE, 'enabled' => TRUE)
-	,'setup' => array('class' => 'CSetup', 'core' => TRUE, 'enabled' => TRUE)
-	,'content' => array('class' => 'CContent', 'core' => TRUE, 'enabled' => TRUE)
-	,'login' => array('class' => 'CLogin', 'core' => TRUE, 'enabled' => TRUE)
-	,'user' => array('class' => 'CUser', 'core' => TRUE, 'enabled' => TRUE)
-	)
+,'routes' => array(
+	'error' => 'CError'
+	,'setup' => 'CSetup'
+	,'content' => 'CContent'
+	,'login' => 'CLogin'
+	,'user' => 'CUser'
+)
 
 /**
 *	Set the page to load as default
