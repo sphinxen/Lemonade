@@ -1,5 +1,4 @@
 @import "base.less";
-@import "animations.less";
 
 
 /** --------------------------------------------------------------
@@ -28,11 +27,26 @@
 .right{float:right;}
 .left{float:left;}
 
-aside .html5 {
-	position: absolute;
-	top: 10vh;
-	width: 38px;
-	height:106px;
+body {
+	background-color: #BFBFB0;
+}
+
+fieldset {
+	border:1px solid #ccc;
+}
+
+header, #header {
+	width: 100%;
+	background-color: #EAB885;
+	display: inline-block;
+	margin: 0px;
+
+	span{
+		font-family: courier, monospace, sans-serif;
+		color: #FFF9B5;
+		font-size: 10em;
+		margin-bottom: 0px;
+	}
 }
 
 a{
@@ -61,26 +75,31 @@ nav{
 	}
 }
 
-footer {
+footer, #footer {
+	.clearfix();
+	background-color: #FFF9B5;
 	div{
 		display:inline-block;
 		border-top: 1px solid @greyLighter;
 		padding-top: 1em;
 		vertical-align: top;
 		width: 30%;
+		padding: 10px;
 	}
 }
 
 
 #base-container{
 	max-width: 1180px;
+	background-color: #F9F9DC;
 }
 
 .container {
 	margin: 0px auto;
-	padding:10px;
-	position: relative;
 }
 
 .content{
-	display: inline-block;}
+	display: inline-block;
+	padding: 20px 10px 40px 10px;
+}
+
