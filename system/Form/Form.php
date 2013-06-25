@@ -13,7 +13,7 @@ class Form
 	private $rules;
     private $error;
 
-	public function start($id = null, $class = null, $action = "#", $method = 'post')
+	public function start($id = null, $class = null, $action = "", $method = 'post')
 	{
         $id = isset($id) ? ' id="'.$id.'"' : "";
         $class = isset($class) ? ' class="'.$class .'"': "";
