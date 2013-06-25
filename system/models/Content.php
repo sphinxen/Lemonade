@@ -12,20 +12,17 @@ class Content
 	public function get_regions()
 	{
 		global $db;
-		// $query = "SELECT `R`.`id`, `R`.`region`, `RP`.`region` AS `parent` FROM `{$cfg['db']['prefix']}regions` AS `R`
-		// 			LEFT JOIN `{$cfg['db']['prefix']}regions` AS `RP`
-
-		// 				ON `R`.`id_parent_region` = `RP`.`id`";
 
 		$query = "SELECT * FROM `{$cfg['db']['prefix']}regions`";
 		$db->connect();
 		$result = $db->query($query);
 		$db->close();
-
+ 
 		while($row = $result->fetch_array())
         {
             $res[] = $row;
         }
+        
 		return $res;
 	}
 

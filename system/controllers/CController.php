@@ -48,6 +48,7 @@ abstract class CController implements IController
 		}
 
 		extract($data);
+		extract($region);
 
 		// Check if user is loged in
 		if(!isset($_SESSION['id']))

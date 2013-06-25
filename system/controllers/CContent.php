@@ -37,10 +37,7 @@ class CContent extends CController
 
 		// Get all the available regions from the database
 		foreach ($content->get_regions() as $key) {
-			if($key['parent'])
-				$regions[$key['id']] .= $key['parent'].'-'.$key['region'];
-			else
-				$regions[$key['id']] .= $key['region'];
+			$regions[$key['id']] .= $key['region'];
 		}
 
 		$form = new Form();
@@ -52,17 +49,17 @@ class CContent extends CController
 			$this->save();
 		}
 
-		$data['region']['content']['main'] = "<fieldset class='clearfix inline-block'><legend>Page</legend>";
-		$data['region']['content']['main'] .= $form->start("content_form");
-		$data['region']['content']['main'] .= "<lable>Select page <a class='right' href='".BASE."content/addPage'>Add page</a></lable>";
-		$data['region']['content']['main'] .= $form->select($pages, array('style' => 'width:100%', 'name' => 'page'));
-		$data['region']['content']['main'] .= "<lable>Select region <a class='right' href=".BASE."content/addRegion'>Add region</a></lable>";
-		$data['region']['content']['main'] .= $form->select($regions, array('style' => 'width:100%', 'name' => 'region'));
-		$data['region']['content']['main'] .= "<lable></lable>";
-		$data['region']['content']['main'] .= $form->textarea(array('class' => 'ckeditor','name' => 'data'));
-		$data['region']['content']['main'] .= "<lable></lable>";
-		$data['region']['content']['main'] .= $form->input('submit', array('value' => 'Save', 'style' => 'width:100%'));
-		$data['region']['content']['main'] .= "</form></fieldset>";
+		$data['content']['main'] = "<fieldset class='clearfix inline-block'><legend>Page</legend>";
+		$data['content']['main'] .= $form->start("content_form");
+		$data['content']['main'] .= "<lable>Select page <a class='right' href='".BASE."content/addPage'>Add page</a></lable>";
+		$data['content']['main'] .= $form->select($pages, array('style' => 'width:100%', 'name' => 'page'));
+		$data['content']['main'] .= "<lable>Select region <a class='right' href=".BASE."content/addRegion'>Add region</a></lable>";
+		$data['content']['main'] .= $form->select($regions, array('style' => 'width:100%', 'name' => 'region'));
+		$data['content']['main'] .= "<lable></lable>";
+		$data['content']['main'] .= $form->textarea(array('class' => 'ckeditor','name' => 'data'));
+		$data['content']['main'] .= "<lable></lable>";
+		$data['content']['main'] .= $form->input('submit', array('value' => 'Save', 'style' => 'width:100%'));
+		$data['content']['main'] .= "</form></fieldset>";
 
 		$this->load_view('default', $data);
 	}
@@ -99,7 +96,7 @@ class CContent extends CController
 
 		// Get all the available regions from the database
 		foreach ($content->get_regions() as $key) {
-			$regions[$key['id']] .= $key['region'];
+			$regions[$key['id']] .= $key;
 		}
 
 		$form = new Form();
@@ -115,15 +112,15 @@ class CContent extends CController
 			redirect(BASE."content");
 		}
 
-		$data['region']['content']['main'] = "<fieldset class='clearfix inline-block'><legend>New page</legend>";
-		$data['region']['content']['main'] .= $form->start();
-		$data['region']['content']['main'] .= "<lable>Parent page</lable>";
-		$data['region']['content']['main'] .= $form->select($pages, array('style' => 'width:100%', 'name' => 'page'));
-		$data['region']['content']['main'] .= "<lable>Page name</lable>";
-		$data['region']['content']['main'] .= $form->input('text', array('style' => 'width:100%', 'name' => 'page'));
-		$data['region']['content']['main'] .= $form->input('submit', array('value' => 'Save', 'style' => 'width:100%'));
-		$data['region']['content']['main'] .= "</form></fieldset>";
-		$data['region']['content']['main'] .= $form->validate_error();
+		$data['content']['main'] = "<fieldset class='clearfix inline-block'><legend>New page</legend>";
+		$data['content']['main'] .= $form->start();
+		$data['content']['main'] .= "<lable>Parent page</lable>";
+		$data['content']['main'] .= $form->select($pages, array('style' => 'width:100%', 'name' => 'page'));
+		$data['content']['main'] .= "<lable>Page name</lable>";
+		$data['content']['main'] .= $form->input('text', array('style' => 'width:100%', 'name' => 'page'));
+		$data['content']['main'] .= $form->input('submit', array('value' => 'Save', 'style' => 'width:100%'));
+		$data['content']['main'] .= "</form></fieldset>";
+		$data['content']['main'] .= $form->validate_error();
 
 		$this->load_view('default', $data);
 	}
@@ -140,7 +137,7 @@ class CContent extends CController
 // 	{
 // 		global $cfg;
 // 		$base = BASE;
-// 		$data['region']['header']['headline'] = 'Lemonade';
+// 		$data['header']['headline'] = 'Lemonade';
 
 // 		$data['menu']['main'] = array(
 // 					'id' => 'main-nav'
@@ -165,7 +162,7 @@ class CContent extends CController
 // 						)
 // 				);
 // 		$submenu = $this->menu->GenerateNavigation($data['menu']['sub'], FALSE);
-// 		$data['region']['content']['left'] = <<<EOD
+// 		$data['content']['left'] = <<<EOD
 // 		<div class='span-5'>
 // 			{$submenu}
 // 		</div>
@@ -177,7 +174,7 @@ class CContent extends CController
 // 				$pages .= "<option value=".$value['class'].">".$key."</option>";
 // 		}
 
-// 		$data['region']['content']['main'] = <<<EOD
+// 		$data['content']['main'] = <<<EOD
 // 		<div class='clearfix inline-block'>
 // 		<form>
 // 		<legend>Select page <a class="right" href="{$base}content/_addpage">Add page</a></legend>

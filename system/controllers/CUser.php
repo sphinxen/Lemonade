@@ -55,7 +55,7 @@ class CUser extends CController
 		$login_menu .= "</form>";
 		$login_menu .= $form->validate_error();
 
-		$data['region']['content']['main'] = $login_menu;
+		$data['content']['main'] = $login_menu;
 
 		$this->load_view('default', $data);
 	}
