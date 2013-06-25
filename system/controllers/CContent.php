@@ -99,10 +99,7 @@ class CContent extends CController
 
 		// Get all the available regions from the database
 		foreach ($content->get_regions() as $key) {
-			if($key['parent'])
-				$regions[$key['id']] .= $key['parent'].'-'.$key['region'];
-			else
-				$regions[$key['id']] .= $key['region'];
+			$regions[$key['id']] .= $key['region'];
 		}
 
 		$form = new Form();

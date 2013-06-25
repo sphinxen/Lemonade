@@ -3,7 +3,7 @@
 *	@author Josef Karlsson <sphinxen83@gmail.com>
 *	@package Lemonade
 */
-class Default_controller extends CController 
+class Index extends CController 
 {
 	public function __construct()
 	{
@@ -26,7 +26,7 @@ class Default_controller extends CController
 		$content = $this->load_model('Content');
 
 		// Load all the page data from database
-		$data['region'] = $content->get_all_content('home');
+		$data['content'] = $content->get_all_content('home');
 
 		/*
 		*	Pagedata goes here

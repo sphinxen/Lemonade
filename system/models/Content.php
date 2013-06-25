@@ -12,12 +12,12 @@ class Content
 	public function get_regions()
 	{
 		global $db;
-		$query = "SELECT `R`.`id`, `R`.`region`, `RP`.`region` AS `parent` FROM `{$cfg['db']['prefix']}regions` AS `R`
-					LEFT JOIN `{$cfg['db']['prefix']}regions` AS `RP`
+		// $query = "SELECT `R`.`id`, `R`.`region`, `RP`.`region` AS `parent` FROM `{$cfg['db']['prefix']}regions` AS `R`
+		// 			LEFT JOIN `{$cfg['db']['prefix']}regions` AS `RP`
 
-						ON `R`.`id_parent_region` = `RP`.`id`";
+		// 				ON `R`.`id_parent_region` = `RP`.`id`";
 
-
+		$query = "SELECT * FROM `{$cfg['db']['prefix']}regions`";
 		$db->connect();
 		$result = $db->query($query);
 		$db->close();
@@ -61,13 +61,11 @@ class Content
 	{
 
 		global $db;
-		$query = "SELECT `PD`.`content`, `R`.`region`, `RP`.`region` AS `parent` FROM `{$cfg['db']['prefix']}page_data` AS `PD` 
+		$query = "SELECT `PD`.`content`, `R`.`region` FROM `{$cfg['db']['prefix']}page_data` AS `PD` 
 					INNER JOIN `{$cfg['db']['prefix']}pages` AS `P`
 						ON `PD`.`id_page` = `P`.`id` 
 					INNER JOIN `{$cfg['db']['prefix']}regions` AS `R`
 						ON `PD`.`id_region` = `R`.`id`
-					LEFT JOIN `{$cfg['db']['prefix']}regions` AS `RP`
-						ON `R`.`id_parent_region` = `RP`.`id`
 					WHERE `P`.`name` = '{$page}'";
 		$db->connect();
 
@@ -76,15 +74,7 @@ class Content
 		{
 			while($row = $result->fetch_array())
 	        {
-	   //      	$p = new PhpStringParser();
-	   //      	ob_start(); 
-				// 	echo $p->parse($row['content']);
-				// 	$output = ob_get_contents();
-				// ob_end_clean(); 
-	        	if(!empty($row['parent']))
-			        $res[$row['parent']][$row['region']] = $row['content'];//preg_replace_callback('/(\<\?=|\<\?php=|\<\?php)(.*?)\?\>/', eval($row['content']), $row['content']);
-	    		else
-	    			$res[$row['region']] = $row['content'];
+    			$res[$row['region']] = $row['content'];
 	        }
 	    }
         $db->close();

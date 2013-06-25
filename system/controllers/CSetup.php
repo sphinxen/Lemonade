@@ -154,8 +154,6 @@ class CSetup extends CController
 			CREATE TABLE IF NOT EXISTS `{$cfg['db']['prefix']}regions`
 			(
 				`id` INT PRIMARY KEY AUTO_INCREMENT,
-				`id_parent_region` INT NULL,
-					CONSTRAINT FOREIGN KEY (`id_parent_region`) REFERENCES `{$cfg['db']['prefix']}regions`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 				`region` VARCHAR(64) NOT NULL,
 				`editable` TINYINT NOT NULL DEFAULT '1'
 			);
@@ -172,21 +170,21 @@ class CSetup extends CController
 
 			INSERT INTO `{$cfg['db']['prefix']}pages` (`controller`, `action`, `name`, `pubished`)
 				VALUES
-					('default_controller', 'index', 'home', 1);
+					('index', 'index', 'home', 1);
 
 			INSERT INTO `{$cfg['db']['prefix']}users` (`username`, `email`, `password`) 
 				VALUES 
 					('{$_POST['username']}', '{$_POST['email']}', '{$salt}{$_POST['password']}');
 
-			INSERT INTO `{$cfg['db']['prefix']}regions` (`id`, `id_parent_region`, `region`, `editable`)
+			INSERT INTO `{$cfg['db']['prefix']}regions` (`id`, `region`, `editable`)
 				VALUES
-					 (1, NULL, 'header', 1)
-					,(2, 1, 'logo', 1)
-					,(3 , NULL, 'content', 0)
-					,(4, 3, 'left', 1)
-					,(5, 3, 'main', 1)
-					,(6, 3, 'right', 1)
-					,(7, NULL, 'footer', 1);
+					 (1, 'header', 1)
+					,(2, 'logo', 1)
+					,(3 , 'content', 0)
+					,(4, 'left', 1)
+					,(5, 'main', 1)
+					,(6, 'right', 1)
+					,(7, 'footer', 1);
 EOD;
 
 
