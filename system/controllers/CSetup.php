@@ -28,6 +28,8 @@ class CSetup extends CController
 		global $db;
 		global $cfg;
 
+		$data['title'] = "Setup";
+
 		if($db->connect_error)
 		{
 			switch ($db->connect_errno) {

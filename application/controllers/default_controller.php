@@ -20,6 +20,8 @@ class Default_controller extends CController
 		global $cfg;
 		$data = $cfg['data'];
 
+		$data['title'] = "Setup";
+
 		// Load models
 		$content = $this->load_model('Content');
 

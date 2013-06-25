@@ -26,7 +26,7 @@
 			<div class="logo clearfix">
 				<a class="" href="<?php echo BASE?>">
 				<span class="left">
-					<?php echo !empty($logo) ? '<img src="'.$logo.'" alt="Logo" />' : '';?><?php echo $title?>
+					<img src="<?php echo BASE?>assets/images/logo.svg" alt="Logo" /><?php echo $title?>
 				</span>
 				</a>
 			</div>
