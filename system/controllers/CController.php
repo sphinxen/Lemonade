@@ -69,22 +69,6 @@ abstract class CController implements IController
 			$login_menu .= "</fieldset></form>";
 		}
 
-		// Check if $menu['main'] is set. Otherwise tries to autogenerate a main-menu
-		// if(!isset($menu['main']))
-		// {
-		// 	$menu['main'] = array(
-		// 			'id' => 'main-nav'
-		// 			,'class' => NULL
-		// 			,'items' => array()
-		// 		);
-		// 	foreach ($cfg['controllers'] as $key => $value) {
-		// 		if(!$value['core'] && $value['enabled'])
-		// 			// [$key] = $cfg['controllers'][$key];
-		// 			$menu['main']['items'][ucwords($key)] = array('path' => BASE.$key, 'id' => NULL, 'class' => NULL);
-		// 	}
-		// }
-		$logo = BASE.'assets/images/logo.svg';
-
 		// Fetches the view and store the page in a variable
 		if(is_file(ROOT."application/views/".$view."/index.php"))
 			$view = ROOT."application/views/".$view."/index.php";

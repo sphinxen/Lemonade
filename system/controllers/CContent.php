@@ -1,4 +1,4 @@
-<?php
+<?php  
 /**
 *
 *	@author Josef Karlsson <sphinxen83@gmail.com>
@@ -6,7 +6,7 @@
 */
 
 if(!defined('BASE')) die('No direct access!');
-if(!isset($_SESSION['user'])) header("Location: http://" . $_SERVER['HTTP_HOST'] . BASE );
+if(!isset($_SESSION['user'])) die('Not logged in!');
 
 class CContent extends CController 
 {

@@ -24,6 +24,8 @@ class CUser extends CController
 		global $cfg;
 		$data = $cfg['data'];
 
+		$data['title'] = "Login";
+
 		// Load the content model
 		$content = $this->load_model('Content');
 
