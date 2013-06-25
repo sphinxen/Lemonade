@@ -75,10 +75,9 @@ class Lemonade_blender implements ISingleton
 		$segment[1] = !empty($segment[1]) ? $segment[1] : 'index';
 
 		$controller = $segment[0];
-		// if(strstr($segment[1], '&'))
-			$action = strstr($segment[1], '&') ? substr($segment[1], 0, strpos($segment[1], '&')) : $segment[1];
-		// else
-			// $action = $segment[1];
+
+		$action = strstr($segment[1], '&') ? substr($segment[1], 0, strpos($segment[1], '&')) : $segment[1];
+		// $action = $segment[1];
 
 		$args = $segment;
 		unset($args[0]);

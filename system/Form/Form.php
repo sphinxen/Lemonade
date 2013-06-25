@@ -134,7 +134,7 @@ class Form
                     case 'trim':
                         $_POST[$field] = trim($_POST[$field]);
                         break;
-                    
+
                     case 'clean':
                         global $db;
                         $db->connect();

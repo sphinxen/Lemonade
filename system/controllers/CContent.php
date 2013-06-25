@@ -54,7 +54,7 @@ class CContent extends CController
 		}
 
 		$data['region']['content']['main'] = "<fieldset class='clearfix inline-block'><legend>Page</legend>";
-		$data['region']['content']['main'] .= $form->start("content");
+		$data['region']['content']['main'] .= $form->start("content_form");
 		$data['region']['content']['main'] .= "<lable>Select page <a class='right' href='".BASE."content/addPage'>Add page</a></lable>";
 		$data['region']['content']['main'] .= $form->select($pages, array('style' => 'width:100%', 'name' => 'page'));
 		$data['region']['content']['main'] .= "<lable>Select region <a class='right' href=".BASE."content/addRegion'>Add region</a></lable>";
@@ -72,12 +72,12 @@ class CContent extends CController
 	 * [get_content description]
 	 * @return [type] [description]
 	 */
-	public function get_content()
+	public function getContent()
 	{//echo "string";
 		// Load the content model
 		$content = $this->load_model('Content');
 
-		$result = $content->get_content($_REQUEST['id_page'], $_REQUEST['id_region']);
+		$result = $content->get_content($_POST['id_page'], $_POST['id_region']);
 		echo $result;
 	}
 
@@ -207,52 +207,18 @@ class CContent extends CController
 // 		$this->load_view('default', $data);
 // 	}
 
-	
+
 	public function save()
 	{
 		$form = new Form();
-		
+
 		$form->set_validate_rules("data", "Data", "clean");
 
 		if($form->validate())
 		{
-			global $db;
+			$content = $this->load_model('Content');
 
-			$query = "SELECT `id` FROM `{$cfg['db']['prefix']}page_data` 
-						WHERE `id_region` = '{$_POST['region']}'
-						AND `id_page` = '{$_POST['page']}'";
-
-			$db->connect();
-			$result = $db->query($query);
-			$db->close();
-
-			
-			if($result->num_rows == 1)
-			{
-				$row = $result->fetch_array();
-				$query = "UPDATE `{$cfg['db']['prefix']}page_data` 
-						SET `content` = '{$_POST['data']}' WHERE `id` = {$row['id']}";
-			}
-			else
-			{
-				$query = "INSERT INTO `{$cfg['db']['prefix']}page_data` (`id_page`, `id_region`, `content`)
-						VALUES ({$_POST['page']}, {$_POST['region']}, '{$_POST['data']}')";
-			}
-			// $result->num_rows; 
-
-			// $query = "UPDATE `{$cfg['db']['prefix']}page_data` 
-			// 	SET `content` = '{$_POST['data']}' 
-			// 	WHERE `id_region` = '{$_POST['region']}'
-			// 	AND `id_page` = '{$_POST['page']}'";
-			// $db->connect();
-			// $db->query($query);
-			// $db->close();
-
-			$db->connect();
-			$db->query($query);
-			$db->close();
-			// echo 'true';
-			// $this->save();
+			$content->save();
 		}
 	}
 }

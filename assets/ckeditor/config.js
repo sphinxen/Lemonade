@@ -36,7 +36,8 @@ CKEDITOR.editorConfig = function( config ) {
 	// Make dialogs simpler.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 
-	config.extraPlugins = "ajax";
+	// config.extraPlugins = "ajax";
+	config.customConfig = "plugins/ajax/plugin.js";
 };
 
 CKEDITOR.on('instanceReady', function (ev) {
@@ -49,3 +50,5 @@ CKEDITOR.on('instanceReady', function (ev) {
          breakAfterClose: false
      });
 });
+
+// CKEDITOR.plugins.add('ajax')

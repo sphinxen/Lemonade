@@ -44,20 +44,72 @@
 // 
 
 
-   
+// CKEDITOR.ajax.post = function( url, args, callback, getResponseText ) {
+//       var async = !!callback;
 
-var page = document.getElementsByName('page')[0],
-    region = document.getElementsByName('region')[0],
+//       var xhr = createXMLHttpRequest();
+
+//       var urlEncodedString = "";
+
+//         if ( !xhr )
+//           return null;
+
+//       xhr.open( 'POST', url, async );
+//       xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+
+//       if ( async ) {
+//         // TODO: perform leak checks on this closure.
+//         xhr.onreadystatechange = function() {
+//           if ( xhr.readyState == 4 ) {
+//             callback( getResponseFn( xhr ) );
+//             xhr = null;
+//           }
+//         };
+//       }
+
+//       if(typeof args === "object") {
+//         for( var i in args ) {
+//           if( urlEncodedString !== "" ) {
+//             urlEncodedString += "&";
+//           }
+
+//           urlEncodedString += i + "=" + args[i];
+//         }
+//       }
+
+//       xhr.send( urlEncodedString );
+
+//         return async ? '' : getResponseFn( xhr );
+//       };
+
+
+
+
+
+var page    = document.getElementsByName('page')[0],
+    region  = document.getElementsByName('region')[0],
+    form    = document.getElementById('content_form'),
 // config.FormatOutput = false;
 
     getContent = function() {
-      CKEDITOR.ajax.load(BASE_URL + "content/get_content?ajax=1&id_page="+page.value+"&id_region="+region.value, function(data){
+      CKEDITOR.ajax.post(BASE_URL + "content/getContent", {'ajax':1, 'id_page': page.value, 'id_region':region.value}, function(data){
         CKEDITOR.instances.data.setData(data);
+      })
+    },
+
+    saveContent = function() {
+    var data = CKEDITOR.instances.data.getData();
+
+    CKEDITOR.ajax.post(BASE_URL + "content/save", {'ajax':1, 'page': page.value, 'region':region.value, 'data': data}, function(data){
+console.log(data);
       });
-};
 
-region.onchange = getContent;
-page.onchange   = getContent;
+      return false;
+    };
 
+region.onchange   = getContent;
+page.onchange     = getContent;
+content.onsubmit  = saveContent;
 
+console.log(content);
 

@@ -10,7 +10,7 @@
 
 (function() {
 	CKEDITOR.plugins.add( 'ajax', {
-		requires: 'xml'
+		requires: 'xml',
 	});
 
 	/**
@@ -87,6 +87,46 @@
 				return async ? '' : getResponseFn( xhr );
 			};
 
+		var post = function( url, args, callback, getResponseFn ) {
+			var async = !!callback;
+
+			var xhr = createXMLHttpRequest();
+
+			var urlEncodedString = "";
+
+				if ( !xhr )
+					return null;
+
+			xhr.open( 'POST', url, async );
+			xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+
+			if ( async ) {
+				// TODO: perform leak checks on this closure.
+				xhr.onreadystatechange = function() {
+					if ( xhr.readyState == 4 ) {
+						callback( getResponseFn( xhr ) );
+						xhr = null;
+					}
+				};
+			}
+
+			if(typeof args === "object") {
+				for( var i in args ) {
+					if( urlEncodedString !== "" ) {
+						urlEncodedString += "&";
+					}
+
+					urlEncodedString += i + "=" + encodeURIComponent(args[i]);
+				}
+			}else if(typeof args === "string") {
+				urlEncodedString = args;
+			}
+
+			xhr.send( urlEncodedString );
+
+				return async ? '' : getResponseFn( xhr );
+			};
+
 		return {
 			/**
 			 * Loads data from an URL as plain text.
@@ -109,6 +149,29 @@
 			 */
 			load: function( url, callback ) {
 				return load( url, callback, getResponseText );
+			},
+
+			/**
+			 * Send post data to server.
+			 *
+			 *		// Load data synchronously.
+			 *		var data = CKEDITOR.ajax.load( 'somedata.txt' );
+			 *		alert( data );
+			 *
+			 *		// Load data asynchronously.
+			 *		var data = CKEDITOR.ajax.load( 'somedata.txt', function( data ) {
+			 *			alert( data );
+			 *		} );
+			 *
+			 * @param {String} url The URL from which load data.
+			 * @param {Function} [callback] A callback function to be called on
+			 * data load. If not provided, the data will be loaded
+			 * synchronously.
+			 * @returns {String} The loaded data. For asynchronous requests, an
+			 * empty string. For invalid requests, `null`.
+			 */
+			post: function( url, args, callback ) {
+				return post( url, args, callback, getResponseText );
 			},
 
 			/**
