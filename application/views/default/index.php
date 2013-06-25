@@ -33,6 +33,7 @@
 			<?php echo $header;?>
 		</header>
 		<nav>
+			<?php echo $this->menu->GenerateNavigation($menu['admin']); ?>
 		</nav>
 		<div class="content main">
 			<?php echo $content['main'] ?>

@@ -20,7 +20,7 @@ class Index extends CController
 		global $cfg;
 		$data = $cfg['data'];
 
-		$data['title'] = "Setup";
+		$data['title'] = "Lemonade";
 
 		// Load models
 		$content = $this->load_model('Content');

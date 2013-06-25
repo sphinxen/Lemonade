@@ -54,19 +54,14 @@ abstract class CController implements IController
 		if(!isset($_SESSION['id']))
 		{
 			$menu['admin'] = '';
-			$menu['user'] = '';
 
-			$form = new Form();
-
-			$login_menu = $form->start(null, 'block', 'user/login');
-			$login_menu .= "<fieldset><legend>Login</legend>";
-			$login_menu .= "<label>Username or E-mail</label>";
-			$login_menu .= $form->input('text', array('name' => 'user'));
-			$login_menu .= "<label>Password</label>";
-			$login_menu .= $form->input('password', array('name' => 'password'));
-			$login_menu .= "<br />";
-			$login_menu .= $form->input('submit', array('value' => 'Login'));
-			$login_menu .= "</fieldset></form>";
+			$menu['user'] = array(
+				'id' => 'user-nav'
+				,'class' => 'menu'
+				,'items' => array(
+					'Login' =>  array('path' => BASE.'user', 'id' => NULL, 'class' => NULL)
+					)
+			);
 		}
 
 		// Fetches the view and store the page in a variable
