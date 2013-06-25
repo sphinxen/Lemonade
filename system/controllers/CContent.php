@@ -26,7 +26,6 @@ class CContent extends CController
 		global $cfg;
 		$data = $cfg['data'];
 
-
 		// Load the content model
 		$content = $this->load_model('Content');
 
