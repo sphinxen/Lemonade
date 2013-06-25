@@ -53,7 +53,7 @@ class CContent extends CController
 		$data['content']['main'] .= $form->start("content_form");
 		$data['content']['main'] .= "<lable>Select page <a class='right' href='".BASE."content/addPage'>Add page</a></lable>";
 		$data['content']['main'] .= $form->select($pages, array('style' => 'width:100%', 'name' => 'page'));
-		$data['content']['main'] .= "<lable>Select region <a class='right' href=".BASE."content/addRegion'>Add region</a></lable>";
+		$data['content']['main'] .= "<lable>Select region <a class='right' href=".BASE."content/addRegion>Add region</a></lable>";
 		$data['content']['main'] .= $form->select($regions, array('style' => 'width:100%', 'name' => 'region'));
 		$data['content']['main'] .= "<lable></lable>";
 		$data['content']['main'] .= $form->textarea(array('class' => 'ckeditor','name' => 'data'));
@@ -83,7 +83,6 @@ class CContent extends CController
 		global $cfg;
 		$data = $cfg['data'];
 
-
 		// Load the content model
 		$content = $this->load_model('Content');
 
@@ -105,17 +104,20 @@ class CContent extends CController
 
 		if($form->validate())
 		{
-			global $db;
-			$db.connect();
+			$content = $this->load_model("Content");
 
+			if($_POST['page_id'] == 0)
+				$content->insertPage();
+			else
+				$content->updatePage();
 
-			redirect(BASE."content");
+			redirect("content");
 		}
 
 		$data['content']['main'] = "<fieldset class='clearfix inline-block'><legend>New page</legend>";
 		$data['content']['main'] .= $form->start();
 		$data['content']['main'] .= "<lable>Parent page</lable>";
-		$data['content']['main'] .= $form->select($pages, array('style' => 'width:100%', 'name' => 'page'));
+		$data['content']['main'] .= $form->select($pages, array('style' => 'width:100%', 'name' => 'page_id'));
 		$data['content']['main'] .= "<lable>Page name</lable>";
 		$data['content']['main'] .= $form->input('text', array('style' => 'width:100%', 'name' => 'page'));
 		$data['content']['main'] .= $form->input('submit', array('value' => 'Save', 'style' => 'width:100%'));
@@ -127,7 +129,46 @@ class CContent extends CController
 
 	public function addRegion()
 	{
+		// Load the data from config file
+		global $cfg;
+		$data = $cfg['data'];
 
+		// Load the content model
+		$content = $this->load_model('Content');
+
+		// Get all the available regions from the database
+		$regions[0] = '- New Region -';
+		foreach ($content->get_regions() as $key) {
+			$regions[$key['id']] .= $key['region'];
+		}
+
+		$form = new Form();
+
+		$form->set_validate_rules("region", "Region name", "required");
+
+		if($form->validate())
+		{
+			$content = $this->load_model("Content");
+
+			if($_POST['region_id'] == 0)
+				$content->insertRegion();
+			else
+				$content->updateRegion();
+
+			redirect("content");
+		}
+
+		$data['content']['main'] = "<fieldset class='clearfix inline-block'><legend>New region</legend>";
+		$data['content']['main'] .= $form->start();
+		$data['content']['main'] .= "<lable>Excisting regions</lable>";
+		$data['content']['main'] .= $form->select($regions, array('style' => 'width:100%', 'name' => 'region_id'));
+		$data['content']['main'] .= "<lable>Region name</lable>";
+		$data['content']['main'] .= $form->input('text', array('style' => 'width:100%', 'name' => 'region'));
+		$data['content']['main'] .= $form->input('submit', array('value' => 'Save', 'style' => 'width:100%'));
+		$data['content']['main'] .= "</form></fieldset>";
+		$data['content']['main'] .= $form->validate_error();
+
+		$this->load_view('default', $data);
 	}
 	/**
 	*

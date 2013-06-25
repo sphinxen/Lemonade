@@ -103,20 +103,73 @@ class Content
 			$query = "INSERT INTO `{$cfg['db']['prefix']}page_data` (`id_page`, `id_region`, `content`)
 					VALUES ({$_POST['page']}, {$_POST['region']}, '{$_POST['data']}')";
 		}
-		// $result->num_rows; 
-
-		// $query = "UPDATE `{$cfg['db']['prefix']}page_data` 
-		// 	SET `content` = '{$_POST['data']}' 
-		// 	WHERE `id_region` = '{$_POST['region']}'
-		// 	AND `id_page` = '{$_POST['page']}'";
-		// $db->connect();
-		// $db->query($query);
-		// $db->close();
 
 		$db->connect();
 		$db->query($query);
 		$db->close();
 	}
 
+	public function insertPage()
+	{
+		global $db;
 
+		$id = NULL;
+
+		// if($_POST['page_id'] == 0)
+		$query = "INSERT INTO `{$cfg['db']['prefix']}pages` (`name`)
+				VALUES ('{$_POST['page']}')";
+		// else
+		// 	$query = "UPDATE `{$cfg['db']['prefix']}pages` 
+		// 			SET `name` = '{$_POST['page']}' WHERE `id` = {$_POST['page_id']}";
+
+		$db->connect();
+		$result = $db->query($query);
+
+		$id = $db->insert_id;
+		$db->close();
+
+		return $id;
+	}
+
+	public function updatePage()
+	{
+		global $db;
+
+		$query = "UPDATE `{$cfg['db']['prefix']}pages` 
+	 			SET `name` = '{$_POST['page']}' WHERE `id` = {$_POST['page_id']}";
+
+		$db->connect();
+		$result = $db->query($query);
+		$db->close();
+	}
+
+	public function insertRegion()
+	{
+		global $db;
+
+		$id = NULL;
+
+		$query = "INSERT INTO `{$cfg['db']['prefix']}regions` (`region`,`editable`)
+				VALUES ('{$_POST['region']}', 1)";
+
+		$db->connect();
+		$result = $db->query($query);
+
+		$id = $db->insert_id;
+		$db->close();
+
+		return $id;
+	}
+
+	public function updateRegion()
+	{
+		global $db;
+
+		$query = "UPDATE `{$cfg['db']['prefix']}regions`
+	 			SET `name` = '{$_POST['region']}' WHERE `id` = {$_POST['region_id']}";
+
+		$db->connect();
+		$result = $db->query($query);
+		$db->close();
+	}
 }
