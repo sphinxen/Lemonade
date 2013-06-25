@@ -85,11 +85,9 @@ class CSetup extends CController
 
 			$data['content']['main'] = $user_form;
 
-
-			$this->load_view('default', $data);
 		}
 
-		// $this->load_view('default/default_view', $data);
+		$this->load_view('default', $data);
 	}
 
 	/**
