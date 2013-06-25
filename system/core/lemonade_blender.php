@@ -103,10 +103,10 @@ class Lemonade_blender implements ISingleton
 					$method = $rc->getMethod($action);
 					$method->invokeArgs($controllerObj, $args);
 				}
-				// else
-					// header('location: http://' . $_SERVER['SERVER_NAME'] . BASE. 'error/e404');
+				else
+					header('location: http://' . $_SERVER['SERVER_NAME'] . BASE. 'error/e404');
 			}
 		}
-		// else header('location: http://'. $_SERVER['SERVER_NAME'] . BASE. 'error/e404');
+		else header('location: http://'. $_SERVER['SERVER_NAME'] . BASE. 'error/e404');
 	}
 }
