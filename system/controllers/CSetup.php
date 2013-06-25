@@ -1,13 +1,22 @@
 <?php
 /**
+*	Part of Lemonade base controllers
 *
-*	@author Josef Karlsson <sphinxen83@gmail.com>
-*	@package Lemonade
+*	@package    Lemonade
+*	@subpackage Core
+*	@author     Josef Karlsson <sphinxen83@gmail.com>
+*	@link       (Sphinxen.se, http://www.sphinxen.se)
 */
 
 if(!defined('BASE')) die('No direct access!');
 
-class CSetup extends CController 
+/**
+ * Setup controller for quick step by step setup
+ *
+ * @package    Lemonade
+ * @subpackage Controller
+ */
+class CSetup extends CController
 {
 	public function __construct()
 	{
@@ -17,13 +26,26 @@ class CSetup extends CController
 	public function index()
 	{
 		global $db;
+		global $cfg;
+
 		if($db->connect_error)
 		{
-			echo "<p>In order for Lemonade to work proporly a database connection needs to be asstablished.
-			<br />Open <strong>" . ROOT.'core/config.php'. "</strong> and enter the data to your database.";
-		}
+			switch ($db->connect_errno) {
+				case '1045':
+					$message = "Access denied for user \"{$cfg['db']['username']}\" and password \"{$cfg['db']['password']}\". Please verify username and password.";
+					break;
+				case '2005':
+					$message = "Unable to connect to \"{$cfg['db']['server']}\". Please verify the server address.";
+					break;
+				default:
+					$message = $db->connect_error;
+					break;
+			}
 
-		if(!$db->table_exists('users'))
+			$data['content']['main'] = "<h3><strong>Database connection error</strong></h3><p>".$message."</p><p>In order for Lemonade to work proporly a database connection needs to be established.
+					<br />Open <strong>application/config.php</strong> within the install directory and enter your database information.</p><p>Also verify that the database exists and that you have the right to access it.</p>";
+		}
+		elseif(!$db->table_exists('users'))
 		{
 			$data['stylesheets'] = array(BASE.'assets/css/stylesheet.css');
 			$data['logo'] = BASE.'assets/images/logo.svg';
@@ -38,12 +60,11 @@ class CSetup extends CController
 			$form->set_validate_rules("confirm_pass", "Confirm Password", "trim|required");
 
 
-			
 			if($form->validate())
 			{
 				$this->create_database();
 			}
-			
+
 
 
 			$user_form = $form->start(null, "block");
@@ -64,8 +85,11 @@ class CSetup extends CController
 
 			$data['content']['main'] = $user_form;
 
+
 			$this->load_view('default', $data);
 		}
+
+		// $this->load_view('default/default_view', $data);
 	}
 
 	/**
@@ -132,7 +156,8 @@ class CSetup extends CController
 				`id` INT PRIMARY KEY AUTO_INCREMENT,
 				`id_parent_region` INT NULL,
 					CONSTRAINT FOREIGN KEY (`id_parent_region`) REFERENCES `{$cfg['db']['prefix']}regions`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-				`region` VARCHAR(64) NOT NULL
+				`region` VARCHAR(64) NOT NULL,
+				`editable` TINYINT NOT NULL DEFAULT '1'
 			);
 
 			CREATE TABLE IF NOT EXISTS `{$cfg['db']['prefix']}page_data`
@@ -153,15 +178,15 @@ class CSetup extends CController
 				VALUES 
 					('{$_POST['username']}', '{$_POST['email']}', '{$salt}{$_POST['password']}');
 
-			INSERT INTO `{$cfg['db']['prefix']}regions` (`id`, `id_parent_region`, `region`)
+			INSERT INTO `{$cfg['db']['prefix']}regions` (`id`, `id_parent_region`, `region`, `editable`)
 				VALUES
-					 (1, NULL, 'header')
-					,(2, 1, 'logo')
-					,(3 , NULL, 'content')
-					,(4, 3, 'left')
-					,(5, 3, 'main')
-					,(6, 3, 'right')
-					,(7, NULL, 'footer');
+					 (1, NULL, 'header', 1)
+					,(2, 1, 'logo', 1)
+					,(3 , NULL, 'content', 0)
+					,(4, 3, 'left', 1)
+					,(5, 3, 'main', 1)
+					,(6, 3, 'right', 1)
+					,(7, NULL, 'footer', 1);
 EOD;
 
 

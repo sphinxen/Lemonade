@@ -44,7 +44,7 @@ class Lemonade_blender implements ISingleton
     */
 	public static function DefaultExceptionHandler($aException)
 	{
-	    die("<h3>Exceptionhandler</h3><p>File " . $aException->getFile() . " at line" . $aException->getLine() ."<p>Uncaught exception: " . $aException->getMessage() . "<pre>" . print_r($aException->getTrace(), true) . "</pre>");
+	    die("<h3>".get_class($aException)."</h3><p>File " . $aException->getFile() . " at line" . $aException->getLine() ."<p>Uncaught exception: " . $aException->getMessage() . "<pre>" . print_r($aException->getTrace(), true) . "</pre>");
 	}
 
 	/**
